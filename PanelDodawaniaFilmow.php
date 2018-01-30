@@ -110,14 +110,12 @@ session_start();
 							echo '<div style="height:5px;"></div>';
 			    		echo '</div>';
 
-
 			    		echo '<div class="col-sm-1 col-sm-offset-0 text-center">'; 
 			    			echo '<div style="height:5px;"></div>';
-							//echo '	<form action="PanelDodawaniaFilmow.php" method="get">
-							echo '			<button name="movie_arr_id" value="'.$i.'" id="push<?php echo $count?>" type="submit" class="btn btn-info btn-sm" style="width:60px; height:40px; background-color: #004080; color:white; border-color: #a3c2c2;">
-												Usuń
-										</button>';
-									//echo '</form>';
+							//echo '<form action="PanelDodawaniaFilmow.php" method="get">
+							echo '<button name="movie_arr_id" value="'.$i.'" id="push<?php echo $count?>" type="submit" class="btn btn-info btn-sm" style="width:60px; height:40px; background-color: #004080; color:white; border-color: #a3c2c2;">
+									Usuń </button>';
+							//echo '</form>';
 							echo '<div style="height:5px;"></div>';
 			    		echo '</div>';
 		    		echo '</div>';
@@ -126,8 +124,8 @@ session_start();
 			    echo '<div class="col-sm-2 col-sm-offset-0 text-center">'; 
 					echo '<div style="height:5px;"></div>';
 					echo '<button name="movie_list" value="'.$add_to_database = true.'" id="array" type="submit" class="btn btn-info btn-sm" style="width:100px; height:40px; background-color: #DD3333; color:white; border-color: #a3c2c2;">
-									Zatwierdź
-							</button>';
+							Zatwierdź
+						</button>';
 						//echo '</form>';
 					echo '<div style="height:5px;"></div>';
 				echo '</div>';
@@ -147,7 +145,6 @@ session_start();
 			{
 				if($file != '.' && $file != '..')
 				{ 
-					
 					echo '<div class="col-sm-3 col-sm-offset-0 text-center">';
 					echo '<div style="height:5px; background-color: #234567;"></div><p style="background-color: #234567; color:white; margin: 0cm 0cm 0cm 0cm; padding: 0cm 0cm 0cm 0cm;" id="'.$file.'" value='.$count.' >'.$file.'</p><div style="height:5px; background-color: #234567;"></div>';
 					echo '<div id = "Film'.$count.'">Filmy</div>';
@@ -169,15 +166,15 @@ session_start();
 </div>
 
 <script type="text/javascript">
-   var count = <?php echo $count ?>;
-   var x = [];
-   var y = [];
-   for (var i = 0; i<count; i++)
-   {
-    x[i] = document.getElementsByTagName("p")[i].getAttribute("id"); 
-    y[i] = document.getElementsByTagName("p")[i].getAttribute("value"); 
+	var count = <?php echo $count ?>;
+	var x = [];
+	var y = [];
+	for (var i = 0; i<count; i++)
+	{
+		x[i] = document.getElementsByTagName("p")[i].getAttribute("id"); 
+		y[i] = document.getElementsByTagName("p")[i].getAttribute("value"); 
     
-    console.log(i); 
+		console.log(i); 
 	}
 
 
@@ -185,7 +182,7 @@ session_start();
 //{
 	for (var i = 0; i<count; i++)
 	{
-	document.getElementById('Film'+i).innerHTML =  '<video width="250" height="150" controls><source src="Filmy/'+x[i]+'" type="video/mp4">Your browser does not support the video tag.</video>';
+		document.getElementById('Film'+i).innerHTML =  '<video width="250" height="150" controls><source src="Filmy/'+x[i]+'" type="video/mp4">Your browser does not support the video tag.</video>';
 	}
 	
 //}, 10000);

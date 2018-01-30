@@ -15,11 +15,11 @@ class DataBase
 
 	public static function GetDataFromDatabase($slq_question)
 	{
-			$result = self::$db -> query ($slq_question);
-			$count = $result->num_rows;
-			$results = array ("result"=>$result, "count"=>$count);
-			self::$db->close();
-			return $results;
+		$result = self::$db -> query ($slq_question);
+		$count = $result->num_rows;
+		$results = array ("result"=>$result, "count"=>$count);
+		self::$db->close();
+		return $results;
 	} 
 } 
 ?>
