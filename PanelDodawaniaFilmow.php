@@ -23,27 +23,59 @@ session_start();
 		$movie_arr_id = new UploadMethods;
 		$movie_dir = new UploadMethods;
 		$movie_array = new Sessions;
-	
+		$movie_array_dir = new Sessions;
+
+			
 		// Z tej zmiennej będę odczytywał wartość z przycisku "button"
     	$movie_name->getInit('movie_name');
     	$movie_arr_id->getInit('movie_arr_id');
+    	$movie_arr_id->getInit('movie_arr_dir');
+    	$movie_dir->getInit('mov_dir');
     	
 
-    	if ($movie_arr_id->get('movie_arr_id') != NULL)
+    	if ( ($movie_arr_id->get('movie_arr_id') != NULL) )
 	    {
     		// Usuwam z tymczasowej tablicy filmy, które mi są niepotrzebne
     		//array_splice($_SESSION['tablica'], $movie_id, 1 );
     		$movie_array->drop('tab_filmow',$movie_arr_id->get('movie_arr_id'));
+    		// Może się wydawać dziwne ale splice dziala tylko na kluczach typu int, dlatego odwoluje sie do movie_ar_id
+    		$movie_array_dir->drop('mov_arr_dir',$movie_arr_id->get('movie_arr_id'));
     		
     		//Zabieram dostęp do tablicy
     		$check = false;
 	    }
 
 
-	    if ($check)
+	    
+    	
+    	echo 'Check status: '. $movie_name->check_status.' </br>';
+
+	    	// Sprawdzam czy wystapio zdarzenie GET i dodaje do bazy danych infomracje
+			if ($movie_name->get('movie_name') != "")
+	    	{
+	 	 		 try
+	    		 {
+				    $movie_array->putArr('tab_filmow',$movie_name->get('movie_name'));
+				    $movie_array_dir->putArr('mov_arr_dir',$movie_name->get('mov_dir'));
+				 } 
+				 catch(Exception $e)
+				 {
+				    echo $e->getMessage();
+				 }
+	    	}
+
+
+
+	   	if ($check)
 		{
 			// W tej tablicy zapisane są tablice 'start', 'stop' i id dodanego filmu
-		    $movie_duration = array ("start"=>$_GET['start'], "stop"=>$_GET['stop'], "mov_id"=>$_GET['mov_id']);
+		    $movie_duration = array ("start"=>$_GET['start'], "stop"=>$_GET['stop'], "mov_id"=>$_GET['mov_id'], "mov_dir"=>$_GET['mov_dir']);
+		    //Przekazuję tablicę movie_durration do 
+			if (!isset($_SESSION['movie_details'])) $_SESSION['movie_details'] = array();
+				$_SESSION['movie_details'] = $movie_duration;
+				var_dump($_SESSION['movie_details']);
+				echo '</br></br>';
+				var_dump($movie_duration);
 
 		    // Wylistuje sobię tablice z powyzej, czyli dodane czasy trwania filmów do tablicy gównej
 		    $tcount = count($_GET['start']);
@@ -54,25 +86,17 @@ session_start();
 		    	echo 'Start: '.$movie_duration['start'][$i].'</br>';
 		    	echo 'Stop: '.$movie_duration['stop'][$i].'</br>';
 		    	echo 'Id Filmu: '.$movie_duration['mov_id'][$i].'</br>';
+		    	echo 'ścieżka: '.$movie_duration['mov_dir'][$i].'</br>';
 		    	echo '</br>';
 		    }
+		    
+		    
+		    echo '<form action="PanelDodawaniaZdarzen.php" method="POST">
+		    	<button type="submit" class="btn btn-info btn-sm" style="width:150px; height:40px; background-color: #FF4500; color:white; border-color: #a3c2c2;">
+					Zatwierdź i przejdź dalej
+				</button>
+		    </form>';
 		}
-    	
-    	echo 'Check status: '. $movie_name->check_status.' </br>';
-
-    	//if ($movie_name->check_status == true)
-    	//{
-			if ($movie_name->get('movie_name') != "")
-	    	{
-	 	 		 try
-	    		 {
-				    $movie_array->putArr('tab_filmow',$movie_name->get('movie_name'));
-				 } 
-				 catch(Exception $e)
-				 {
-				    echo $e->getMessage();
-				 }
-	    	}
 
 			$arr_count = $movie_array->count('tab_filmow');
     		echo "</br>Ilość elementów w tablicy".$arr_count.'</br>';
@@ -81,6 +105,8 @@ session_start();
 		    	for ($i = 0; $i < $arr_count; $i++)
 		    	{
 		    		echo '<div class="row" text-center style="background-color:#e6eeff; border: 1px solid #FFFFFF;">';
+
+						echo '<input type="hidden" name="mov_dir[]" value="'.$movie_array_dir->getArr('mov_arr_dir',$i).'">';
 
 			    		echo '<div class="col-sm-1 col-sm-offset-0 text-center">'; 
 			    			echo '<div style="height:5px;"></div>';
@@ -104,6 +130,7 @@ session_start();
 										echo '<label for="godzz">Godz. zakończenia: </label>';
 										echo '<input type="time" name="stop[]"  class="form-control">';
 										echo '<input type="hidden" name="mov_id[]" value="'.$movie_array->getArr('tab_filmow',$i).'" class="form-control">';
+
 									echo '</div>';
 								//echo '</form>';
 							
@@ -116,6 +143,7 @@ session_start();
 							echo '<button name="movie_arr_id" value="'.$i.'" id="push<?php echo $count?>" type="submit" class="btn btn-info btn-sm" style="width:60px; height:40px; background-color: #004080; color:white; border-color: #a3c2c2;">
 									Usuń </button>';
 							//echo '</form>';
+							
 							echo '<div style="height:5px;"></div>';
 			    		echo '</div>';
 		    		echo '</div>';
@@ -123,7 +151,7 @@ session_start();
 			
 			    echo '<div class="col-sm-2 col-sm-offset-0 text-center">'; 
 					echo '<div style="height:5px;"></div>';
-					echo '<button name="movie_list" value="'.$add_to_database = true.'" id="array" type="submit" class="btn btn-info btn-sm" style="width:100px; height:40px; background-color: #DD3333; color:white; border-color: #a3c2c2;">
+					echo '<button type="submit" class="btn btn-info btn-sm" style="width:100px; height:40px; background-color: #DD3333; color:white; border-color: #a3c2c2;">
 							Zatwierdź
 						</button>';
 						//echo '</form>';
@@ -133,36 +161,41 @@ session_start();
 
 		//}
 
+
+
+
+
     ?>
 	</br>
-	</div><div class="row">
-	<div class="col-sm-8 col-sm-offset-0">
-		
-		<?php
+	</div>
 
-		$count = -2; // Nie wiem dlaczego dwie petle przechodzą bez wykonania instrukcji
-  		while($file = $dir->read())
-			{
-				if($file != '.' && $file != '..')
-				{ 
-					echo '<div class="col-sm-3 col-sm-offset-0 text-center">';
-					echo '<div style="height:5px; background-color: #234567;"></div><p style="background-color: #234567; color:white; margin: 0cm 0cm 0cm 0cm; padding: 0cm 0cm 0cm 0cm;" id="'.$file.'" value='.$count.' >'.$file.'</p><div style="height:5px; background-color: #234567;"></div>';
-					echo '<div id = "Film'.$count.'">Filmy</div>';
-					echo '	<form action="PanelDodawaniaFilmow.php" method="GET">
+	<div class="row">
+		<div class="col-sm-8 col-sm-offset-0">
+			<?php
+			$count = -2; // Nie wiem dlaczego dwie petle przechodzą bez wykonania instrukcji
+	  		while($file = $dir->read())
+				{
+					if($file != '.' && $file != '..')
+					{ 
+						echo '<div class="col-sm-3 col-sm-offset-0 text-center">';
+						echo '<div style="height:5px; background-color: #234567;"></div><p style="background-color: #234567; color:white; margin: 0cm 0cm 0cm 0cm; padding: 0cm 0cm 0cm 0cm;" id="'.$file.'" value='.$count.' >'.$file.'</p><div style="height:5px; background-color: #234567;"></div>';
+						echo '<div id = "Film'.$count.'">Filmy</div>';
+						echo '<form action="PanelDodawaniaFilmow.php" method="GET">
+								<input type="hidden" name="mov_dir" value="'.$file.'">
 								<button name="movie_name" value="'.$count.'" id="push<?php echo $count?>" type="submit" class="btn btn-info btn-sm" style="width:150px;line-height: 2;background-color: #dcedc8; color:black;">
-									Dodaj film do listy
+										Dodaj film do listy
 								</button>
-								<input type="hidden" name="movie_dir" value="'.$file.'">
 							</form>';
-					echo '</div>';
-					//echo $count;
+						echo '</div>';
+						//echo $count;
+					}
+					$count++;
 				}
-				$count++;
-			}
-		$dir->close();
-		?>
+			$dir->close();
+			?>
 		</div>
 	</div>
+
 </div>
 
 <script type="text/javascript">
