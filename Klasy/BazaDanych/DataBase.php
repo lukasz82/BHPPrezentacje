@@ -21,5 +21,18 @@ class DataBase
 		self::$db->close();
 		return $results;
 	} 
+
+	public static function InsertDataToDatabase($sql)
+	{
+		if (self::$db->query($sql) === TRUE) 
+		{
+    		echo "Wstawiem rekordy";
+		} 
+		else 
+		{
+    		echo "Dupa: " . $sql . "<br>" . self::$db->error;
+		}
+		self::$db->close();
+	} 
 } 
 ?>

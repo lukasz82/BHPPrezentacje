@@ -4,9 +4,14 @@ readfile ('Layouty/naglowek.html');
 require('./Klasy/BazaDanych/DataBase.php');
 require('./Klasy/sessions.php');
 require('./Klasy/UploadMethods.php');
+require('./Klasy/Buttons.php');
 include('./Funkcje/InitVariables.php');
 // Inicjacje klas i konstruktorów
 DataBase::InitializeDB();
+$Delete_Button = new Buttons('Usuń','movie_arr_id','','submit','60px','40px','#004080','white','#a3c2c2');
+$Accept_Button = new Buttons('Zatwierdź i przejdź dalej','','','submit','150px','40px','#FF4500','white','#a3c2c2');
+$Add_Mov_Button = new Buttons('Dodaj film do listy','movie_name','','submit','150px','40px','#dcedc8','black','');
+
 $dir = dir('Filmy');
 session_start();
 
@@ -45,9 +50,6 @@ session_start();
     		$check = false;
 	    }
 
-
-	    
-    	
     	echo 'Check status: '. $movie_name->check_status.' </br>';
 
 	    	// Sprawdzam czy wystapio zdarzenie GET i dodaje do bazy danych infomracje
@@ -63,7 +65,6 @@ session_start();
 				    echo $e->getMessage();
 				 }
 	    	}
-
 
 
 	   	if ($check)
@@ -89,13 +90,10 @@ session_start();
 		    	echo 'ścieżka: '.$movie_duration['mov_dir'][$i].'</br>';
 		    	echo '</br>';
 		    }
-		    
-		    
-		    echo '<form action="PanelDodawaniaZdarzen.php" method="POST">
-		    	<button type="submit" class="btn btn-info btn-sm" style="width:150px; height:40px; background-color: #FF4500; color:white; border-color: #a3c2c2;">
-					Zatwierdź i przejdź dalej
-				</button>
-		    </form>';
+
+		    echo '<form action="AddEventToDB.php" method="POST">';
+				$Accept_Button->Show();
+		    echo '</form>';
 		}
 
 			$arr_count = $movie_array->count('tab_filmow');
@@ -139,11 +137,7 @@ session_start();
 
 			    		echo '<div class="col-sm-1 col-sm-offset-0 text-center">'; 
 			    			echo '<div style="height:5px;"></div>';
-							//echo '<form action="PanelDodawaniaFilmow.php" method="get">
-							echo '<button name="movie_arr_id" value="'.$i.'" id="push<?php echo $count?>" type="submit" class="btn btn-info btn-sm" style="width:60px; height:40px; background-color: #004080; color:white; border-color: #a3c2c2;">
-									Usuń </button>';
-							//echo '</form>';
-							
+								$Delete_Button->Show_witch_value($i);
 							echo '<div style="height:5px;"></div>';
 			    		echo '</div>';
 		    		echo '</div>';
@@ -158,12 +152,6 @@ session_start();
 					echo '<div style="height:5px;"></div>';
 				echo '</div>';
 	     	echo '</form>';
-
-		//}
-
-
-
-
 
     ?>
 	</br>
@@ -181,11 +169,9 @@ session_start();
 						echo '<div style="height:5px; background-color: #234567;"></div><p style="background-color: #234567; color:white; margin: 0cm 0cm 0cm 0cm; padding: 0cm 0cm 0cm 0cm;" id="'.$file.'" value='.$count.' >'.$file.'</p><div style="height:5px; background-color: #234567;"></div>';
 						echo '<div id = "Film'.$count.'">Filmy</div>';
 						echo '<form action="PanelDodawaniaFilmow.php" method="GET">
-								<input type="hidden" name="mov_dir" value="'.$file.'">
-								<button name="movie_name" value="'.$count.'" id="push<?php echo $count?>" type="submit" class="btn btn-info btn-sm" style="width:150px;line-height: 2;background-color: #dcedc8; color:black;">
-										Dodaj film do listy
-								</button>
-							</form>';
+								<input type="hidden" name="mov_dir" value="'.$file.'">';
+								$Add_Mov_Button->Show_witch_line_and_value($count);
+						echo '</form>';
 						echo '</div>';
 						//echo $count;
 					}
@@ -195,7 +181,6 @@ session_start();
 			?>
 		</div>
 	</div>
-
 </div>
 
 <script type="text/javascript">
