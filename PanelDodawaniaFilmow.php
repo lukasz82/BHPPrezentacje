@@ -17,10 +17,34 @@ session_start();
 
 ?>
 
-<div class="row"> 
+		<div class="col-sm-8 col-sm-offset-0">
+			<div class="row">
+			<?php
+			$count = -2; // Nie wiem dlaczego dwie petle przechodzą bez wykonania instrukcji
+	  		while($file = $dir->read())
+				{
+					if($file != '.' && $file != '..')
+					{ 
+						echo '<div class="col-sm-3 col-sm-offset-0 text-center">';
+						echo '<div style="height:5px; background-color: #234567;"></div><p style="background-color: #234567; color:white; margin: 0cm 0cm 0cm 0cm; padding: 0cm 0cm 0cm 0cm;" id="'.$file.'" value='.$count.' >'.$file.'</p><div style="height:5px; background-color: #234567;"></div>';
+						echo '<div id = "Film'.$count.'">Filmy</div>';
+						echo '<form action="PanelDodawaniaFilmow.php" method="GET">
+								<input type="hidden" name="mov_dir" value="'.$file.'">';
+								$Add_Mov_Button->Show_witch_line_and_value($count);
+						echo '</form>';
+						echo '</div>';
+						//echo $count;
+					}
+					$count++;
+				}
+			$dir->close();
+			?>
+		</div>
+	</div>
+
+
+
 	<div class="col-sm-8 col-sm-offset-0"></br></br>
-	Nagłówek
-	</br></br></br>
 	<?php
 
 		// Deklaracja obiektów klas
@@ -157,31 +181,10 @@ session_start();
 	</br>
 	</div>
 
-	<div class="row">
-		<div class="col-sm-8 col-sm-offset-0">
-			<?php
-			$count = -2; // Nie wiem dlaczego dwie petle przechodzą bez wykonania instrukcji
-	  		while($file = $dir->read())
-				{
-					if($file != '.' && $file != '..')
-					{ 
-						echo '<div class="col-sm-3 col-sm-offset-0 text-center">';
-						echo '<div style="height:5px; background-color: #234567;"></div><p style="background-color: #234567; color:white; margin: 0cm 0cm 0cm 0cm; padding: 0cm 0cm 0cm 0cm;" id="'.$file.'" value='.$count.' >'.$file.'</p><div style="height:5px; background-color: #234567;"></div>';
-						echo '<div id = "Film'.$count.'">Filmy</div>';
-						echo '<form action="PanelDodawaniaFilmow.php" method="GET">
-								<input type="hidden" name="mov_dir" value="'.$file.'">';
-								$Add_Mov_Button->Show_witch_line_and_value($count);
-						echo '</form>';
-						echo '</div>';
-						//echo $count;
-					}
-					$count++;
-				}
-			$dir->close();
-			?>
-		</div>
-	</div>
-</div>
+
+
+
+
 
 <script type="text/javascript">
 	var count = <?php echo $count ?>;

@@ -43,6 +43,25 @@ class Buttons
 		</button>';
 	}
 
+	public function Show_id($id)
+	{
+		echo '
+		<button 
+		name="'.$this->name.'" 
+		id="'.$id.'" 
+		value="'.$this->value.'" 
+		class="btn btn-info btn-sm" 
+		style="
+			width:'.$this->width.'; 
+			height:'.$this->height.'; 
+			background-color: '.$this->background_color.'; 
+			color:'.$this->text_color.'; 
+			border-color: '.$this->border_color.';"
+		>
+			'.$this->text.'
+		</button>';
+	}
+
 	public function Show()
 	{
 		echo '

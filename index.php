@@ -16,8 +16,6 @@ DataBase::InitializeDB();
     <h4><div id="czas" style="font-size: 30px;"></div></h4>
 
       </br></br>
-      <p>Food is my passion. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-
       <?php 
 
         $lista_filmow = DataBase::GetDataFromDatabase("select * from listafilmow");
@@ -34,14 +32,9 @@ DataBase::InitializeDB();
           echo '</br>';
         }
 
-      
       ?> 
-      
-	  
-	  
-	  
-	  
-	  <h2>Filmy BHP</h2>
+  
+<h2>Filmy BHP</h2>
 <h3> Za 6 sek zacznie się odtwarzanie </h3>
 
 

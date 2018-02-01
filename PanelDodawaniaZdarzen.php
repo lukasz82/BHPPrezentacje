@@ -2,26 +2,36 @@
 // Pliki źródłowe
 readfile ('Layouty/naglowek.html');
 require('./Klasy/BazaDanych/DataBase.php');
-// Inicjacje klas i konstruktorów
+require('./Klasy/Buttons.php');
 DataBase::InitializeDB();
-//echo Baza::getValue();
+$Next = new Buttons('Aktywuj zdarzenie','event','','submit','150px','40px','#dcedc8','black','');
 ?> 
     <div class="col-sm-9">
     </br>
     <h4><div id="czas" style="font-size: 30px;"></div></h4>
+    
+    <?php 
 
-      </br></br>
-      <p>Food is my passion. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-
-      <?php 
-
-        $lista_filmow = DataBase::GetDataFromDatabase("SELECT zdarzenie.dir_filmu, zdarzenie.start, zdarzenie.stop, zdarzenia.nazwa FROM zdarzenie INNER JOIN zdarzenia ON zdarzenie.id_zdarzenia = zdarzenia.id");
+        $lista_filmow = DataBase::GetDataFromDatabase("SELECT zdarzenie.dir_filmu, zdarzenie.start, zdarzenie.stop, zdarzenia.nazwa, zdarzenia.id FROM zdarzenie INNER JOIN zdarzenia ON zdarzenie.id_zdarzenia = zdarzenia.id");
         $count = $lista_filmow['count'];
         $result = $lista_filmow['result'];
 
+        // Licznik zmiany kolorków zdarzeń
+
+        $line = $result->fetch_assoc();
+        $licznik = stripslashes($line['id']);
+        //echo $licznik;
         for ( $i = 0; $i < $count; $i++)
         {
-          $line = $result->fetch_assoc();
+            $line = $result->fetch_assoc();
+            if ($licznik != stripslashes($line['id']) )
+            {            
+                // Przekazuje do buttona id zdarzenia   
+                $Next->Show_id($licznik);
+                echo '</br></br>';
+                $licznik ++;
+            }
+
           echo stripslashes($line['nazwa']);
           echo ' - ';
           echo '<b>'.stripslashes($line['dir_filmu']).'</b>';
@@ -32,74 +42,80 @@ DataBase::InitializeDB();
           echo stripslashes($line['stop']);
           echo ' - ';
           echo '</br>';
-
         }
 
       
       ?> 
-<h2>Filmy BHP</h2>
-<h3> Za 6 sek zacznie się odtwarzanie </h3>
 
-<div id="losowa"></div>
+<div id="czas"></div>
 
-<script type="text/javascript">
-var licznik = 0;
+<div id="Podglad"></div>
 
+<div id="Film"></div>
+
+<script src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+<script>
 
 function getTime() 
 {
     return (new Date()).toLocaleTimeString();
 }
- 
-//wywołanie ma na celu eliminację opóźnienia sekundowego
-document.getElementById('czas').innerHTML = getTime();
 
-var plikDoWyswietl = '<p> Wyswietlam jakis komunikat, który był zaplanowany na jakąś godzine, następny wyświeli się za 10 sek. <p>';
-var plikDoWyswietl_1 = '<p> <font color="Red"> A teraz wyświetlam film </font> <p>';
-var plikDoWyswietl_2 = '<p> <font color="Red"> A teraz komunikat, Górnicy poniżej zgłosić się na badanie alkomatem </p><table border="1"><tbody><tr><td>Imię</td><td>Nazwisko</td><td>Nr.komputera</td></tr><tr><td>Jan</td><td>Nowak</td><td>1234</td></tr><tr><td>Jacek</td><td>Kała</td><td>1234</td></tr></tbody></table>';
-var prezentacja = '<a href="powepoint.pptx">my link</a>';
+$(document).ready(function() { // czeka aż dokument zostanie wczytany
+    $("button").click( function() // odczytuje jakiekolwiek kliknięcie jakiegokolwiek przycisku
+    {
+        var id = $(this).attr('id'); // tworzę nową zmienną, do której przypisuję wartość id z klikniętego przycisku, this jest to po prostu $("button"), żeby nie pisac ileś razy tego samego odwołuje się do "tego" wywołanego obiektu 
+        $.ajax
+        ({
+            type : 'get',
+            url  : 'Funkcje/EventsFromDatabase.php',
+            // Do "data" przekazuję id zdarzenia, żeby je aktywować
+            data : {'id':id},
+            dataType : 'json',
+            // Dodstaję callback z tabelą z bazy danych
+            success:function(data)
+            {
+               console.log(data);
+               // $("#res"+number).toggleClass('active').toggle("slow" ); // ta metoda powoduje, że pierwsze jest ukrywane a później odkrywane
+                //$("#res"+number).html(data.tabela).slideToggle( "slow" );
+                //alert(n);
 
-setInterval(function() 
-{
-    document.getElementById('czas').innerHTML = getTime();
-    
-if (licznik == 5) 
-{
-    document.getElementById('losowa').innerHTML =  '<video width="800" height="600" controls autoplay><source src="powepoint.mp4" type="video/mp4">Your browser does not support the video tag.</video>';
-}
+                //if(data[i].city && data[i].cStatus){
+                            //txt += "<tr><td>"+data[i].city+"</td><td>"+data[i].cStatus+"</td></tr>";
+                        //
+                document.getElementById('Podglad').innerHTML =  "";
+                var count = data.nazwa.length;
+                for (i=0;i<count;i++)
+                {
+                    document.getElementById('Podglad').innerHTML +=  
+                    data.nazwa[i] +
+                    '</br>' +
+                    data.start[i] +
+                    '</br>';
 
-if (licznik == 16) 
-{
-    document.getElementById('losowa').innerHTML =  '<img src="film.gif"loop=infinite />';
-}
+                }
 
-if (licznik == 24) 
-{
-    document.getElementById('losowa').innerHTML =  plikDoWyswietl_2;
-}
+                setInterval(function() 
+                {
+                    var czas = getTime();
 
-if (licznik == 35) 
-{
-    document.getElementById('losowa').innerHTML =  '<img src="film2.gif"loop=infinite />';
-}
-    
-licznik++;
-     
-}, 1000);
+                    for (i=0;i<count;i++)
+                    {
+                        if ( czas == data.start[i] )
+                        {
+                            document.getElementById('Film').innerHTML =  '<video width="800" height="600" controls autoplay><source src="Filmy/'+data.dir_filmu[i]+'" type="video/mp4">Your browser does not support the video tag.</video>';
+                        }
+                    }
+
+                    document.getElementById('czas').innerHTML =  czas;
+                }, 1000);
+
+            }
+        });
+    }
+    ).first().click();
+});
 </script>
-      
-      
-      
-      
-      
-
-      <h4>Dodaj zdarzenie</h4>
-      <form role="form">
-        <div class="form-group">
-          <textarea class="form-control" rows="3" required></textarea>
-        </div>
-        <button type="submit" class="btn btn-success">Submit</button>
-      </form>
-      <br><br>
       
 <?php readfile ('Layouty/stopka.html');?> 
