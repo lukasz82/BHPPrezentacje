@@ -77,13 +77,7 @@ $(document).ready(function() { // czeka aż dokument zostanie wczytany
             success:function(data)
             {
                console.log(data);
-               // $("#res"+number).toggleClass('active').toggle("slow" ); // ta metoda powoduje, że pierwsze jest ukrywane a później odkrywane
-                //$("#res"+number).html(data.tabela).slideToggle( "slow" );
-                //alert(n);
 
-                //if(data[i].city && data[i].cStatus){
-                            //txt += "<tr><td>"+data[i].city+"</td><td>"+data[i].cStatus+"</td></tr>";
-                        //
                 document.getElementById('Podglad').innerHTML =  "";
                 var count = data.nazwa.length;
                 for (i=0;i<count;i++)
