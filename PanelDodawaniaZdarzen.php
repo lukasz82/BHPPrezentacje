@@ -98,7 +98,7 @@ $(document).ready(function() { // czeka aż dokument zostanie wczytany
                     {
                         if ( czas == data.start[i] )
                         {
-                            document.getElementById('Film').innerHTML =  '<video width="800" height="600" controls autoplay><source src="Filmy/'+data.dir_filmu[i]+'" type="video/mp4">Your browser does not support the video tag.</video>';
+                            document.getElementById('Film').innerHTML =  '<video width="800" height="600" controls autoplay loop><source src="Filmy/'+data.dir_filmu[i]+'" type="video/mp4">Your browser does not support the video tag.</video>';
                         }
                     }
 
