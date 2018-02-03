@@ -35,6 +35,12 @@ class DataBase
 		self::$db->close();
 	} 
 
+	public static function Update($sql)
+	{
+		self::$db->query($sql);
+		self::$db->close();
+	} 
+
 
 } 
 ?>

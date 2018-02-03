@@ -2,8 +2,10 @@
 require('DataBase.php');
 $id = $_GET['id'];
 
+
   DataBase::InitializeDB();
   $lista_filmow = DataBase::GetDataFromDatabase("SELECT zdarzenie.dir_filmu, zdarzenie.start, zdarzenie.stop, zdarzenia.nazwa FROM zdarzenie INNER JOIN zdarzenia ON zdarzenie.id_zdarzenia = zdarzenia.id WHERE zdarzenia.id = '$id'");
+
    /* 
     $count = $lista_filmow['count'];
     $result = $lista_filmow['result'];
@@ -33,6 +35,8 @@ $id = $_GET['id'];
           $movie_duration["start"][] = stripslashes($line['start']);
           $movie_duration["stop"][] = stripslashes($line['stop']); 
         }
+
+
 
 //$line = $lista_filmow['result']->fetch_assoc();
 //  echo json_encode($line);

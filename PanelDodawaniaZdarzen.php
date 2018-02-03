@@ -11,7 +11,7 @@ $Next = new Buttons('Aktywuj zdarzenie','event','','submit','150px','40px','#dce
     <h4><div id="czas" style="font-size: 30px;"></div></h4>
     
     <?php 
-
+ 
         $lista_filmow = DataBase::GetDataFromDatabase("SELECT zdarzenie.dir_filmu, zdarzenie.start, zdarzenie.stop, zdarzenia.nazwa, zdarzenia.id FROM zdarzenie INNER JOIN zdarzenia ON zdarzenie.id_zdarzenia = zdarzenia.id");
         $count = $lista_filmow['count'];
         $result = $lista_filmow['result'];
@@ -26,8 +26,10 @@ $Next = new Buttons('Aktywuj zdarzenie','event','','submit','150px','40px','#dce
             $line = $result->fetch_assoc();
             if ($licznik != stripslashes($line['id']) )
             {            
-                // Przekazuje do buttona id zdarzenia   
+                // Przekazuje do buttona id zdarzenia  
+
                 $Next->Show_id($licznik);
+
                 echo '</br></br>';
                 $licznik ++;
             }
@@ -49,6 +51,8 @@ $Next = new Buttons('Aktywuj zdarzenie','event','','submit','150px','40px','#dce
 
 <div id="czas"></div>
 
+<div id="sesja">sesja</div>
+
 <div id="Podglad"></div>
 
 <div id="Film"></div>
@@ -66,6 +70,23 @@ $(document).ready(function() { // czeka aż dokument zostanie wczytany
     $("button").click( function() // odczytuje jakiekolwiek kliknięcie jakiegokolwiek przycisku
     {
         var id = $(this).attr('id'); // tworzę nową zmienną, do której przypisuję wartość id z klikniętego przycisku, this jest to po prostu $("button"), żeby nie pisac ileś razy tego samego odwołuje się do "tego" wywołanego obiektu 
+
+        // Przekazuję z javascriptu id klikniętego zdarzenia do zmiennej sesyjnej serwera
+
+        $.ajax
+        ({
+            type : 'get',
+            url  : 'Funkcje/EventId.php',
+            // Do "data" przekazuję id zdarzenia, żeby je aktywować
+            data : {'id':id},
+            // Dodstaję callback z tabelą z bazy danych
+            success:function(data)
+            {
+               console.log(data);
+            }
+        });
+
+
         $.ajax
         ({
             type : 'get',
