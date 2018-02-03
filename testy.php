@@ -11,7 +11,6 @@
 <link rel="stylesheet" type="text/css" href="Style/strona.css">
 
 </head>
-
 <body>
 
 <div class="container-fluid">
@@ -38,133 +37,96 @@ function getTime()
     return (new Date()).toLocaleTimeString();
 }
 
-   var id = '<?php echo $id ?>';
-
-                //setInterval(function() 
-                //{
-                //    console.log(id);
-                //}, 1000);
-var refresh = false;
+var id = '<?php echo $id ?>';
 var count = 0;
 var licznik = 0;
-var id_copy = 0;
-
 
 $(document).ready(function() //czeka aż dokument zostanie wczytany
 { 
-
-
-        $.ajax
-        ({
-            type : 'get',
-            url  : 'Funkcje/EventNow.php',
-            // Do "data" przekazuję id zdarzenia, żeby je aktywować
-            // Dodstaję callback z tabelą z bazy danych
-            success:function(data)
-            {
-               id = data;
-               id_copy
-               console.log(data);
-            }
-        });
-    
-
-        $.ajax
-        ({
-            type : 'get',
-            url  : 'Funkcje/EventsFromDatabase.php',
-            // Do "data" przekazuję id zdarzenia, żeby je aktywować
-            data : {'id':id},
-            dataType : 'json',
-            // Dodstaję callback z tabelą z bazy danych
-            success:function(data)
-            {
-               console.log(data);
-
-                document.getElementById('Film').innerHTML =  "";
-                
-                count = data.nazwa.length;
-                /*
-                for (i=0;i<count;i++)
-                {
-                    document.getElementById('test').innerHTML +=  
-                    data.nazwa[i] +
-                    '</br>' +
-                    data.start[i] +
-                    '</br>';
-                }
-                */
-                
-
-                setInterval(function() 
-                {
-                    licznik++;
-
-                    if (licznik > 5)
-                    {
-
-
-                        $.ajax
-                        ({
-                            type : 'get',
-                            url  : 'Funkcje/EventNow.php',
-                            // Do "data" przekazuję id zdarzenia, żeby je aktywować
-                            // Dodstaję callback z tabelą z bazy danych
-                            success:function(data)
-                            {
-                                if (id != data) 
-                                {
-                                    id = data;
-                                    $.ajax
-                                    ({
-                                        type : 'get',
-                                        url  : 'Funkcje/EventsFromDatabase.php',
-                                        // Do "data" przekazuję id zdarzenia, żeby je aktywować
-                                        data : {'id':id},
-                                        dataType : 'json',
-                                        // Dodstaję callback z tabelą z bazy danych
-                                        success:function(data)
-                                        {
-                                           console.log(data);
-
-                                            document.getElementById('Film').innerHTML =  "";
-                                            
-                                            count = data.nazwa.length;
-                                        }
-                                    });
-                                }
-                                console.log(data);
-                            }
-                        });
-                        licznik = 0;
-                    }
-
-                    var czas = getTime();
-
-                    for (i=0;i<count;i++)
-                    {
-                        if ( czas == data.start[i] )
-                        {
-                            document.getElementById('Film').innerHTML =  '<video width="800" height="600" controls autoplay loop><source src="Filmy/'+data.dir_filmu[i]+'" type="video/mp4">Your browser does not support the video tag.</video>';
-                        }
-                    }
-
-                    document.getElementById('czas').innerHTML =  czas;
-                }, 1000);
-
-            }
-        });
-        
+    $.ajax
+    ({
+        type : 'get',
+        url  : 'Funkcje/EventNow.php',
+        // Do "data" przekazuję id zdarzenia, żeby je aktywować
+        // Dodstaję callback z tabelą z bazy danych
+        success:function(data)
+        {
+           id = data;
+           id_copy
+           console.log(data);
+        }
     });
 
+    $.ajax
+    ({
+        type : 'get',
+        url  : 'Funkcje/EventsFromDatabase.php',
+        // Do "data" przekazuję id zdarzenia, żeby je aktywować
+        data : {'id':id},
+        dataType : 'json',
+        // Dodstaję callback z tabelą z bazy danych
+        success:function(data)
+        {
+            console.log(data);
+            document.getElementById('Film').innerHTML =  "";
+            
+            count = data.nazwa.length;
+            setInterval(function() 
+            {
+                licznik++;
 
+                if (licznik > 5)
+                {
+                    $.ajax
+                    ({
+                        type : 'get',
+                        url  : 'Funkcje/EventNow.php',
+                        // Do "data" przekazuję id zdarzenia, żeby je aktywować
+                        // Dodstaję callback z tabelą z bazy danych
+                        success:function(data)
+                        {
+                            if (id != data) 
+                            {
+                                id = data;
+                                $.ajax
+                                ({
+                                    type : 'get',
+                                    url  : 'Funkcje/EventsFromDatabase.php',
+                                    // Do "data" przekazuję id zdarzenia, żeby je aktywować
+                                    data : {'id':id},
+                                    dataType : 'json',
+                                    // Dodstaję callback z tabelą z bazy danych
+                                    success:function(data)
+                                    {
+                                        console.log(data);
+                                        document.getElementById('Film').innerHTML =  "";
+                                        count = data.nazwa.length;
+                                    }
+                                });
+                            }
+                            console.log(data);
+                        }
+                    });
+                    licznik = 0;
+                }
 
+                var czas = getTime();
+                for (i=0;i<count;i++)
+                {
+                    if ( czas == data.start[i] )
+                    {
+                        document.getElementById('Film').innerHTML =  '<video width="800" height="600" controls autoplay loop><source src="Filmy/'+data.dir_filmu[i]+'" type="video/mp4">Your browser does not support the video tag.</video>';
+                    }
+                }
+                document.getElementById('czas').innerHTML =  czas;
+            }, 1000);
+        }
+    });
+        
+});
 
 </script>
-
-
 </div>
-  </div>
-
+</div>
 </body>
 </html>

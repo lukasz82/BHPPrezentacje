@@ -9,58 +9,46 @@ $Next = new Buttons('Aktywuj zdarzenie','event','','submit','150px','40px','#dce
     <div class="col-sm-9">
     </br>
     <h4><div id="czas" style="font-size: 30px;"></div></h4>
-    
-    <?php 
- 
-        $lista_filmow = DataBase::GetDataFromDatabase("SELECT zdarzenie.dir_filmu, zdarzenie.start, zdarzenie.stop, zdarzenia.nazwa, zdarzenia.id FROM zdarzenie INNER JOIN zdarzenia ON zdarzenie.id_zdarzenia = zdarzenia.id");
-        $count = $lista_filmow['count'];
-        $result = $lista_filmow['result'];
 
-        // Licznik zmiany kolorków zdarzeń
+<?php
+    $lista_filmow = DataBase::GetDataFromDatabase("SELECT zdarzenie.dir_filmu, zdarzenie.start, zdarzenie.stop, zdarzenia.nazwa, zdarzenia.id FROM zdarzenie INNER JOIN zdarzenia ON zdarzenie.id_zdarzenia = zdarzenia.id");
+    $count = $lista_filmow['count'];
+    $result = $lista_filmow['result'];
 
+    // Licznik zmiany kolorków zdarzeń
+    $line = $result->fetch_assoc();
+    $licznik = stripslashes($line['id']);
+    //echo $licznik;
+    for ( $i = 0; $i < $count; $i++)
+    {
         $line = $result->fetch_assoc();
-        $licznik = stripslashes($line['id']);
-        //echo $licznik;
-        for ( $i = 0; $i < $count; $i++)
-        {
-            $line = $result->fetch_assoc();
-            if ($licznik != stripslashes($line['id']) )
-            {            
-                // Przekazuje do buttona id zdarzenia  
-
-                $Next->Show_id($licznik);
-
-                echo '</br></br>';
-                $licznik ++;
-            }
-
-          echo stripslashes($line['nazwa']);
-          echo ' - ';
-          echo '<b>'.stripslashes($line['dir_filmu']).'</b>';
-          //echo '</br>';
-          echo ' - ';
-          echo stripslashes($line['start']);
-          echo ' - ';
-          echo stripslashes($line['stop']);
-          echo ' - ';
-          echo '</br>';
+        if ($licznik != stripslashes($line['id']) )
+        {            
+            // Przekazuje do buttona id zdarzenia  
+            $Next->Show_id($licznik);
+            echo '</br></br>';
+            $licznik ++;
         }
-
-      
-      ?> 
+        echo stripslashes($line['nazwa']);
+        echo ' - ';
+        echo '<b>'.stripslashes($line['dir_filmu']).'</b>';
+        echo ' - ';
+        echo stripslashes($line['start']);
+        echo ' - ';
+        echo stripslashes($line['stop']);
+        echo ' - ';
+        echo '</br>';
+    }
+?> 
 
 <div id="czas"></div>
-
 <div id="sesja">sesja</div>
-
 <div id="Podglad"></div>
-
 <div id="Film"></div>
 
 <script src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 
 <script>
-
 function getTime() 
 {
     return (new Date()).toLocaleTimeString();
@@ -86,7 +74,6 @@ $(document).ready(function() { // czeka aż dokument zostanie wczytany
             }
         });
 
-
         $.ajax
         ({
             type : 'get',
@@ -97,8 +84,7 @@ $(document).ready(function() { // czeka aż dokument zostanie wczytany
             // Dodstaję callback z tabelą z bazy danych
             success:function(data)
             {
-               console.log(data);
-
+                console.log(data);
                 document.getElementById('Podglad').innerHTML =  "";
                 var count = data.nazwa.length;
                 for (i=0;i<count;i++)
@@ -108,13 +94,11 @@ $(document).ready(function() { // czeka aż dokument zostanie wczytany
                     '</br>' +
                     data.start[i] +
                     '</br>';
-
                 }
 
                 setInterval(function() 
                 {
                     var czas = getTime();
-
                     for (i=0;i<count;i++)
                     {
                         if ( czas == data.start[i] )
