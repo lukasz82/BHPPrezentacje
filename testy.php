@@ -52,7 +52,6 @@ $(document).ready(function() //czeka aż dokument zostanie wczytany
         success:function(data)
         {
            id = data;
-           id_copy
            console.log(data);
         }
     });
