@@ -86,8 +86,8 @@ async function getDataFromDatabase()
                 arr_init = true;
             }
 
-            arr_lenght = play.length;
-            console.log("arr[] lenght przed petla: " + arr_lenght); 
+            arr_length = play.length;
+            console.log("arr[] lenght przed petla: " + arr_length); 
 
             var time = getTime();
             for (i=0;i<count;i++)
