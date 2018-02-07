@@ -28,6 +28,7 @@ let id = 0;
 //let play = false;
 let play = []; // Zakadam, że wszystkie elementy ustawione są na "false"
 let arr_init = false; // Zmienna bool sprawdzajaca cz tablica zostaa zainicjowana
+
 function getTime() 
 {
     return (new Date()).toLocaleTimeString();
@@ -35,7 +36,6 @@ function getTime()
 
 function getEventId()
 {
-    
     return $.ajax
     ({
         type : 'get',
@@ -86,8 +86,6 @@ async function getDataFromDatabase()
                 arr_init = true;
             }
 
-            //arr[arr.length] = 1;
-            //arr[arr.length] = 2;
             arr_lenght = play.length;
             console.log("arr[] lenght przed petla: " + arr_lenght); 
 
@@ -99,16 +97,12 @@ async function getDataFromDatabase()
                 var data_stop = data.stop[i].replace(/[^0-9\.]+/g, ""); 
                 var time_copy = time.replace(/[^0-9\.]+/g, "");
 
-
                 console.log("Play 2 data start: " + data_start);
                 console.log(data_stop);
                 console.log("Play 2 time copy: " + time_copy); 
                 console.log("Play 2 status: " + play[i]); 
 
                 // Warunek odpalający filmik z danego przedzialu timeu
-
-
-
                 if (play[i] == false)
                 {
                     if (time_copy > data_start && time_copy < data_stop)
