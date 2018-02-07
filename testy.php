@@ -21,6 +21,7 @@
 <div id="test"></div>
 <?php 
 
+/*
 require('./Klasy/BazaDanych/DataBase.php');
 DataBase::InitializeDB();
     $aktywne_zdarzenie = DataBase::GetDataFromDatabase("SELECT id_zdarzenia FROM aktywnezdarzenie WHERE id = 1");
@@ -28,6 +29,7 @@ DataBase::InitializeDB();
     $line = $result->fetch_assoc();
     $id = stripslashes($line['id_zdarzenia']);
     echo "Id = ".$id;
+    */
 ?>
 
 <script>
@@ -37,9 +39,11 @@ function getTime()
     return (new Date()).toLocaleTimeString();
 }
 
-var id = '<?php echo $id ?>';
 var count = 0;
 var licznik = 0;
+var id = 0;
+var play_1 = false;
+var play_2 = false;
 
 $(document).ready(function() //czeka aż dokument zostanie wczytany
 { 
@@ -51,77 +55,141 @@ $(document).ready(function() //czeka aż dokument zostanie wczytany
         // Dodstaję callback z tabelą z bazy danych
         success:function(data)
         {
-           id = data;
-           console.log(data);
-        }
-    });
-
-    $.ajax
-    ({
-        type : 'get',
-        url  : 'Funkcje/EventsFromDatabase.php',
-        // Do "data" przekazuję id zdarzenia, żeby je aktywować
-        data : {'id':id},
-        dataType : 'json',
-        // Dodstaję callback z tabelą z bazy danych
-        success:function(data)
-        {
+            id = data;
             console.log(data);
-            document.getElementById('Film').innerHTML =  "";
-            
-            count = data.nazwa.length;
-            setInterval(function() 
-            {
-                licznik++;
 
-                if (licznik > 5)
+            $.ajax
+            ({
+                type : 'get',
+                url  : 'Funkcje/EventsFromDatabase.php',
+                // Do "data" przekazuję id zdarzenia, żeby je aktywować
+                data : {'id':id},
+                dataType : 'json',
+                // Dodstaję callback z tabelą z bazy danych
+                success:function(data)
                 {
-                    $.ajax
-                    ({
-                        type : 'get',
-                        url  : 'Funkcje/EventNow.php',
-                        // Do "data" przekazuję id zdarzenia, żeby je aktywować
-                        // Dodstaję callback z tabelą z bazy danych
-                        success:function(data)
-                        {
-                            if (id != data) 
-                            {
-                                id = data;
-                                $.ajax
-                                ({
-                                    type : 'get',
-                                    url  : 'Funkcje/EventsFromDatabase.php',
-                                    // Do "data" przekazuję id zdarzenia, żeby je aktywować
-                                    data : {'id':id},
-                                    dataType : 'json',
-                                    // Dodstaję callback z tabelą z bazy danych
-                                    success:function(data)
-                                    {
-                                        console.log(data);
-                                        document.getElementById('Film').innerHTML =  "";
-                                        count = data.nazwa.length;
-                                    }
-                                });
-                            }
-                            console.log(data);
-                        }
-                    });
-                    licznik = 0;
-                }
+                    console.log(data);
+                    document.getElementById('Film').innerHTML =  "";
+                    //count = data.nazwa.length;
 
-                var czas = getTime();
-                for (i=0;i<count;i++)
-                {
-                    if ( czas == data.start[i] )
+                    setInterval(function() 
                     {
-                        document.getElementById('Film').innerHTML =  '<video width="800" height="600" controls autoplay loop><source src="Filmy/'+data.dir_filmu[i]+'" type="video/mp4">Your browser does not support the video tag.</video>';
-                    }
+                        licznik++;
+
+                        if (licznik > 2)
+                        {
+                            document.getElementById('Film').innerHTML =  "";
+                            $.ajax
+                            ({
+                                type : 'get',
+                                url  : 'Funkcje/EventNow.php',
+                                // Do "data" przekazuję id zdarzenia, żeby je aktywować
+                                // Dodstaję callback z tabelą z bazy danych
+                                success:function(data)
+                                {
+                                    console.log("Id w kroku 2: " + id);
+                                    console.log("data w kroku 2: " + data);
+                                    if (id != data) 
+                                    {
+                                        id = data;
+                                        $.ajax
+                                        ({
+                                            type : 'get',
+                                            url  : 'Funkcje/EventsFromDatabase.php',
+                                            // Do "data" przekazuję id zdarzenia, żeby je aktywować
+                                            data : {'id':id},
+                                            dataType : 'json',
+                                            // Dodstaję callback z tabelą z bazy danych
+                                            success:function(data)
+                                            {
+                                                console.log(data);
+                                                document.getElementById('Film').innerHTML =  "";
+                                                count = data.nazwa.length;
+
+
+                                                var czas = getTime();
+                                                for (i=0;i<count;i++)
+                                                {
+
+                                                    // Usuwam z czasów znaki specjalne, zostawiam cyfry w celu porównanie przedziaów czasu jako wartości typu int
+                                                    var data_start = data.start[i].replace(/[^0-9\.]+/g, "");
+                                                    var data_stop = data.stop[i].replace(/[^0-9\.]+/g, ""); 
+                                                    var time_copy = czas.replace(/[^0-9\.]+/g, "");
+
+                                                    console.log("Play 2 data start: " + data_start);
+                                                    console.log(data_stop);
+                                                    console.log("Play 2 time copy: " + time_copy); 
+                                                    console.log("Play 2 status: " + play_2); 
+
+                                                    // Warunek odpalający filmik gdy czas jest równoważny dacie startu
+                                                    //if ( czas == data.start[i] )
+                                                    // Warunek odpalający filmik z danego przedzialu czasu
+                                                    if (data_start <= time_copy && data_stop > time_copy)
+                                                    {
+                                                        if (data_start <= time_copy && data_stop > time_copy)
+                                                        {
+                                                            if (play_2 == false)
+                                                            {
+                                                                document.getElementById('Film').innerHTML =  '<video width="800" height="600" controls autoplay loop><source src="Filmy/'+data.dir_filmu[i]+'" type="video/mp4">Your browser does not support the video tag.</video>';
+                                                                play_2 = true;
+                                                            }
+                                                        }   
+                                                        else 
+                                                        {
+                                                            play_2 = false;
+                                                        }
+                                                    }
+                                                }
+
+                                            }
+                                        });
+                                    }
+
+                                    var czas = getTime();
+                                    for (i=0;i<count;i++)
+                                    {
+
+                                        // Usuwam z czasów znaki specjalne, zostawiam cyfry w celu porównanie przedziaów czasu jako wartości typu int
+                                        var data_start = data.start[i].replace(/[^0-9\.]+/g, "");
+                                        var data_stop = data.stop[i].replace(/[^0-9\.]+/g, ""); 
+                                        var time_copy = czas.replace(/[^0-9\.]+/g, "");
+
+                                        console.log(data_start);
+                                        console.log(data_stop);
+                                        console.log(time_copy); 
+
+                                        // Warunek odpalający filmik gdy czas jest równoważny dacie startu
+                                        //if ( czas == data.start[i] )
+                                        // Warunek odpalający filmik z danego przedzialu czasu
+                                        if (data_start <= time_copy && data_stop > time_copy)
+                                        {
+                                            if (play_1 == false)
+                                            {
+                                                document.getElementById('Film').innerHTML =  '<video width="800" height="600" controls autoplay loop><source src="Filmy/'+data.dir_filmu[i]+'" type="video/mp4">Your browser does not support the video tag.</video>';
+                                                play_1 = true;
+                                            }
+                                        }   
+                                        else 
+                                        {
+                                            play_1 = false;
+                                        }
+                                    }
+
+                                    
+                                }
+                            });
+                            licznik = 0;
+                        }
+
+
+                        document.getElementById('czas').innerHTML =  czas;
+                    }, 5000);
                 }
-                document.getElementById('czas').innerHTML =  czas;
-            }, 1000);
+            });
+
+
         }
-    });
-        
+    });        
 });
 
 </script>
