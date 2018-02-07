@@ -102,12 +102,11 @@ async function getDataFromDatabase()
                 console.log("Play 2 time copy: " + time_copy); 
                 console.log("Play 2 status: " + play[i]); 
 
-                // Warunek odpalający filmik z danego przedzialu timeu
+                // Warunek odpalający filmik z danego przedzialu czasu
                 if (play[i] == false)
                 {
                     if (time_copy > data_start && time_copy < data_stop)
                     {
-                       
                         document.getElementById('Film').innerHTML =  '<video width="800" height="600" controls autoplay loop><source src="Filmy/'+data.dir_filmu[i]+'" type="video/mp4">Your browser does not support the video tag.</video>';
                         //play = true;
                         play[i] = true;
@@ -128,7 +127,6 @@ async function getDataFromDatabase()
 
 $(document).ready(function() //czeka aż dokument zostanie wczytany
 { 
-    
     setInterval(function() 
     {
         counter++;

@@ -34,5 +34,23 @@ class DataBase
 		}
 		self::$db->close();
 	} 
+
+	public static function DelDataFromDatabase($del_id)
+    {
+    	// Sprawdzam czy nie jest to jedyny wpis w bazie danych, jeśli tak to używam czyszczenia caej bazy ze śmieci i żeby indeksów nie pipierdzielilo
+    	$count = self::$db->query("SELECT id FROM zdarzenia"); 
+
+		$int = $count->num_rows;
+    	if ($int == 1)
+    	{
+    		self::$db->query("TRUNCATE TABLE zdarzenia");
+    		self::$db->query("TRUNCATE TABLE zdarzenie");
+    		self::$db->close();
+    	} else if ($int > 1)
+    	{
+        	self::$db -> query("DELETE zdarzenia, zdarzenie FROM zdarzenia INNER JOIN zdarzenie ON zdarzenia.id = zdarzenie.id_zdarzenia WHERE zdarzenia.id = '$del_id'");
+        	self::$db->close();
+    	}
+    }
 } 
 ?>
