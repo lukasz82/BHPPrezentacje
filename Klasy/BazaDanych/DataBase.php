@@ -46,7 +46,8 @@ class DataBase
     		self::$db->query("TRUNCATE TABLE zdarzenia");
     		self::$db->query("TRUNCATE TABLE zdarzenie");
     		self::$db->close();
-    	} else if ($int > 1)
+    	} 
+    	else if ($int > 1)
     	{
         	self::$db -> query("DELETE zdarzenia, zdarzenie FROM zdarzenia INNER JOIN zdarzenie ON zdarzenia.id = zdarzenie.id_zdarzenia WHERE zdarzenia.id = '$del_id'");
         	self::$db->close();
