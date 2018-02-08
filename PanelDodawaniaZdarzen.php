@@ -28,28 +28,19 @@ $Del = new Buttons('Usuń zdarzenie','del_id','','submit','150px','40px','#ffccb
 
     DataBase::InitializeDB();
     $lista_filmow = DataBase::GetDataFromDatabase("SELECT zdarzenie.dir_filmu, zdarzenie.start, zdarzenie.stop, zdarzenia.nazwa, zdarzenia.id FROM zdarzenie INNER JOIN zdarzenia ON zdarzenie.id_zdarzenia = zdarzenia.id");
+    
     $count = $lista_filmow['count'];
+    echo 'Ilość wierszy '.$count.'</br>';
     $result = $lista_filmow['result'];
 
     $line = $result->fetch_assoc();
-    $counter = stripslashes($line['id']);
-
+    $actual_id = stripslashes($line['id']);
+    echo 'Aktualne id '.$actual_id.'</br>';
+    echo '</br></br> ZACZYNAMY PĘTELKĘ</br></br>';
+    
     echo '<div class="col-sm-6">';
     for ( $i = 0; $i < $count; $i++)
     {
-        $line = $result->fetch_assoc();
-
-        if ($counter != stripslashes($line['id']) )
-        {            
-            // Przekazuje do buttona id zdarzenia  
-            $Next->Show_id($counter);
-            echo '<form action="PanelDodawaniaZdarzen.php" method="get">';
-                $Del->Show_witch_value($counter);
-            echo '</form>';
-            echo '</br></br>';
-            $counter ++;
-        }
-
         if ($line['id'] % 2 == 0)
         {
             echo '<div style="background-color: #e0e0eb;">';
@@ -60,9 +51,7 @@ $Del = new Buttons('Usuń zdarzenie','del_id','','submit','150px','40px','#ffccb
             echo '<div style="background-color: #b3cce6;">';
         } 
 
-        echo "counter = :".$counter."</br>";
-        echo "Id = :".stripslashes($line['id'])."</br>";
-
+        echo "Aktualne Id = :".$actual_id."</br>";
         echo stripslashes($line['nazwa']);
         echo ' - </br>';
         echo '<b>'.stripslashes($line['dir_filmu']).'</b>';
@@ -70,13 +59,26 @@ $Del = new Buttons('Usuń zdarzenie','del_id','','submit','150px','40px','#ffccb
         echo stripslashes($line['start']);
         echo ' - ';
         echo stripslashes($line['stop']);
-        echo ' - ';
+
+        $actual_id_copy = $actual_id;
+
         echo '</br></br>';
         echo '</div>';
+        $line = $result->fetch_assoc();
+        $actual_id = stripslashes($line['id']);
 
-        $counter = stripslashes($line['id']);
+        if ($actual_id_copy != stripslashes($line['id']) )
+        {            
+            // Przekazuje do buttona id zdarzenia  
+            $Next->Show_id($actual_id_copy);
+            echo '<form action="PanelDodawaniaZdarzen.php" method="get">';
+                $Del->Show_witch_value($actual_id_copy);
+            echo '</form>';
+            echo '</br></br>';
+        }
     }
     echo '</div>';
+    
 ?> 
 
 <div id="czas"></div>

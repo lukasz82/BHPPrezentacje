@@ -18,7 +18,6 @@
    
 <div id="time"></div>
 <div id="Film"></div>
-<div id="test"></div>
 
 <script>
 
@@ -78,7 +77,7 @@ async function getDataFromDatabase()
             if (arr_init == false) 
             {
                 play.splice(0, play.length);
-                document.getElementById('Film').innerHTML ="";
+                document.getElementById('Film').innerHTML = " ";
                 for (i=0; i<count; i++)
                 {
                     play[play.length] = false;
@@ -107,13 +106,13 @@ async function getDataFromDatabase()
                 {
                     if (time_copy > data_start && time_copy < data_stop)
                     {
-                        document.getElementById('Film').innerHTML =  '<video width="800" height="600" controls autoplay loop><source src="Filmy/'+data.dir_filmu[i]+'" type="video/mp4">Your browser does not support the video tag.</video>';
+                        document.getElementById('Film').innerHTML = '<video width="800" height="600" controls autoplay loop><source src="Filmy/'+data.dir_filmu[i]+'" type="video/mp4">Your browser does not support the video tag.</video>';
                         //play = true;
                         play[i] = true;
                     } else { play[i] = false; }
                 } else if (play[i] == true)
                 {
-                    if ( (time_copy < data_start && time_copy < data_stop) || (time_copy < data_start && time_copy < data_stop) )
+                    if ((time_copy < data_start && time_copy < data_stop) || (time_copy > data_start && time_copy > data_stop))
                     {                        
                         play[i] = false;
                         console.log("jesli play == true dstart<t i dstop<t: " + play[i]); 
@@ -123,7 +122,6 @@ async function getDataFromDatabase()
         }
     });
 }
-
 
 $(document).ready(function() //czeka aż dokument zostanie wczytany
 { 
