@@ -107,14 +107,19 @@ async function getDataFromDatabase()
                     if (time_copy > data_start && time_copy < data_stop)
                     {
                         document.getElementById('Film').innerHTML = '<video width="800" height="600" controls autoplay loop><source src="Filmy/'+data.dir_filmu[i]+'" type="video/mp4">Your browser does not support the video tag.</video>';
-                        //play = true;
                         play[i] = true;
-                    } else { play[i] = false; }
-                } else if (play[i] == true)
+                    } 
+                    else 
+                    { 
+                        play[i] = false; 
+                    }
+                } 
+                else if (play[i] == true)
                 {
                     if ((time_copy < data_start && time_copy < data_stop) || (time_copy > data_start && time_copy > data_stop))
                     {                        
                         play[i] = false;
+                        document.getElementById('Film').innerHTML = " ";
                         console.log("jesli play == true dstart<t i dstop<t: " + play[i]); 
                     }
                 } 

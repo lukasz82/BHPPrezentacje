@@ -53,9 +53,9 @@ $Del = new Buttons('Usuń zdarzenie','del_id','','submit','150px','40px','#ffccb
 
         echo "Aktualne Id = :".$actual_id."</br>";
         echo stripslashes($line['nazwa']);
-        echo ' - </br>';
+        echo '</br>';
         echo '<b>'.stripslashes($line['dir_filmu']).'</b>';
-        echo ' - </br>';
+        echo '</br>';
         echo stripslashes($line['start']);
         echo ' - ';
         echo stripslashes($line['stop']);
