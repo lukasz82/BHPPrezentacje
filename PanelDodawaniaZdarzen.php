@@ -92,7 +92,8 @@ function getTime()
     return (new Date()).toLocaleTimeString();
 }
 
-$(document).ready(function() { // czeka aż dokument zostanie wczytany
+$(document).ready(function() 
+{ // czeka aż dokument zostanie wczytany
     $("button").click( function() // odczytuje jakiekolwiek kliknięcie jakiegokolwiek przycisku
     {
         var id = $(this).attr('id'); // tworzę nową zmienną, do której przypisuję wartość id z klikniętego przycisku, this jest to po prostu $("button"), żeby nie pisac ileś razy tego samego odwołuje się do "tego" wywołanego obiektu 

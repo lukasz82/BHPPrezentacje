@@ -18,32 +18,30 @@ $dir = dir('Filmy');
 session_start();
 ?>
 
-<div class="col-sm-8 col-sm-offset-0">
-	<div class="row">
+<div class="col-md-6 sidenav">
+	
 		<?php
 		$count = -2; // Nie wiem dlaczego dwie petle przechodzą bez wykonania instrukcji
   		while($file = $dir->read())
 			{
 				if($file != '.' && $file != '..')
 				{ 
-					echo '<div class="col-sm-3 col-sm-offset-0 text-center">';
-					echo '<div style="height:5px; background-color: #234567;"></div><p style="background-color: #234567; color:white; margin: 0cm 0cm 0cm 0cm; padding: 0cm 0cm 0cm 0cm;" id="'.$file.'" value='.$count.' >'.$file.'</p><div style="height:5px; background-color: #234567;"></div>';
-					echo '<div id = "Film'.$count.'">Filmy</div>';
-					echo '<form action="PanelDodawaniaFilmow.php" method="GET">
+					echo '<div class="col-sm-3 text-center">';
+						echo '<div style="height:5px; background-color: #234567;"></div><p style="background-color: #234567; color:white; margin: 0cm 0cm 0cm 0cm; padding: 0cm 0cm 0cm 0cm;" id="'.$file.'" value='.$count.' >'.$file.'</p><div style="height:5px; background-color: #234567;"></div>';
+							echo '<div id = "Film'.$count.'">Filmy</div>';
+							echo '<form action="PanelDodawaniaFilmow.php" method="GET">
 							<input type="hidden" name="mov_dir" value="'.$file.'">';
 							$Add_Mov_Button->Show_witch_line_and_value($count);
-					echo '</form>';
+							echo '</form>';
 					echo '</div>';
-					//echo $count;
 				}
 				$count++;
 			}
 		$dir->close();
 		?>
 	</div>
-</div>
 
-<div class="col-sm-8 col-sm-offset-0"></br></br>
+<div class="col-md-3">
 	<?php
 
 		// Deklaracja obiektów klas
@@ -120,25 +118,19 @@ session_start();
     	echo "</br>Ilość elementów w tablicy".$arr_count.'</br>';
     
 		echo '<form action="PanelDodawaniaFilmow.php" method="GET">';
-		
 		for ($i = 0; $i < $arr_count; $i++)
 		{
-		    echo '<div class="row" text-center style="background-color:#e6eeff; border: 1px solid #FFFFFF;">';
+
+		    //echo '<div class="row" text-center style="background-color:#e6eeff; border: 1px solid #FFFFFF;">';
 
 				echo '<input type="hidden" name="mov_dir[]" value="'.$movie_array_dir->getArr('mov_arr_dir',$i).'">';
-			 	echo '<div class="col-sm-1 col-sm-offset-0 text-center">'; 
+			 	echo '<div class="col-sm-2 col-sm-offset-0 text-center">'; 
 			    	echo '<div style="height:5px;"></div>';
-						echo "Film nr: ".$movie_array->getArr('tab_filmow',$i);
+						echo "Film nr: ".$movie_array->getArr('tab_filmow',$i)." o nazwie ".$movie_array_dir->getArr('mov_arr_dir',$i);
 						echo '<div style="height:5px;"></div>';
 			    	echo '</div>';
 
-			    	echo '<div class="col-sm-1 col-sm-offset-0 text-center">'; 
-			    		echo '<div style="height:5px;"></div>';
-							echo "i = ".$i;
-						echo '<div style="height:5px;"></div>';
-			    	echo '</div>';
-
-		    		echo '<div class="col-sm-2 col-sm-offset-0 text-center">'; 
+		    		echo '<div class="col-sm-2 col-sm-offset-1 text-center">'; 
 		    			echo '<div style="height:5px;"></div>';
 							//echo '<form action="PanelDodawaniaFilmow.php" method="get">';
 		    					echo '<div class="form-group">';
@@ -158,8 +150,8 @@ session_start();
 							$Delete_Button->Show_witch_value($i);
 						echo '<div style="height:5px;"></div>';
 			    	echo '</div>';
-		    	echo '</div>';
-		     	}
+		     }
+
 			
 			    echo '<div class="col-sm-2 col-sm-offset-0 text-center">'; 
 					echo '<div style="height:5px;"></div>';
@@ -173,6 +165,8 @@ session_start();
     ?>
 	</br>
 </div>
+
+
 
 <script type="text/javascript">
 	var count = <?php echo $count ?>;

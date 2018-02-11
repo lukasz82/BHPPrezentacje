@@ -106,7 +106,7 @@ async function getDataFromDatabase()
                 {
                     if (time_copy > data_start && time_copy < data_stop)
                     {
-                        document.getElementById('Film').innerHTML = '<video width="800" height="600" controls autoplay loop><source src="Filmy/'+data.dir_filmu[i]+'" type="video/mp4">Your browser does not support the video tag.</video>';
+                        document.getElementById('Film').innerHTML = '<video id="myvideo" width="800" height="600" controls autoplay loop><source src="Filmy/'+data.dir_filmu[i]+'" type="video/mp4">Your browser does not support the video tag.</video>';
                         play[i] = true;
                     } 
                     else 

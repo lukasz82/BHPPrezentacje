@@ -1,6 +1,6 @@
-    /* Set height of the grid so .sidenav can be 100% (adjust if needed) */
-    .row.content {height: 1500px}
-    
+    /* Seth height of the grid so .sidenav can be 100% (adjust if needed) 
+    .row.content {min-height: 800px}
+    */
     /* Set gray background color and 100% height */
     .sidenav {
       background-color: #f1f1f1;
@@ -37,22 +37,38 @@
       }
     }
 
-.col-sm-3 {
+
+.col-sm-3{
 background-color: #E6E6E6;
 box-shadow: 1px 2px 4px rgba(0, 0, 0, .5);
 padding: 5px;
 margin: 5px;
+display: inline-block;
 min-width: 280px;
 max-width: :280px;
 border: 1px solid #999999;
 }
 
-.col-sm-1, .col-sm-2 {
+
+
+.col-sm-2 {
 background-color: #EEEEEE;
 box-shadow: 1px 2px 4px rgba(0, 0, 0, .1);
 padding: 5px;
 margin: 2px;
-min-width: 200x;
+min-width: 250px;
+max-width: :250px;
+min-height: 45px;
+border: 1px solid #999999;
+}
+
+.col-sm-1 {
+background-color: #EEEEEE;
+box-shadow: 1px 2px 4px rgba(0, 0, 0, .1);
+padding: 5px;
+margin: 2px;
+min-width: 90px;
+max-width: :90px;
 min-height: 45px;
 border: 1px solid #999999;
 }
@@ -65,7 +81,7 @@ input {
   clear: both;
 }
 
-.col-md-6 {
+.col-md-6, .md6 {
 background-color: #f5f3f3;
 }
 
@@ -86,4 +102,9 @@ background-color: #f5f3f3;
   color: #a94442;
   background-color: #f2dede;
   border-color: #ebccd1;
+}
+
+:-webkit-full-screen #myvideo {
+  width: 100%;
+  height: 100%;
 }
