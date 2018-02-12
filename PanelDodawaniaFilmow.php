@@ -51,39 +51,39 @@ session_start();
 		$movie_array_dir = new Sessions;
 			
 		// Z tej zmiennej będę odczytywał wartość z przycisku "button"
-    	$movie_name->getInit('movie_name');
-    	$movie_arr_id->getInit('movie_arr_id');
-    	$movie_arr_id->getInit('movie_arr_dir');
-    	$movie_dir->getInit('mov_dir');
+		$movie_name->getInit('movie_name');
+		$movie_arr_id->getInit('movie_arr_id');
+		$movie_arr_id->getInit('movie_arr_dir');
+		$movie_dir->getInit('mov_dir');
 
-    	if ( ($movie_arr_id->get('movie_arr_id') != NULL) )
-	    {
-    		// Usuwam z tymczasowej tablicy filmy, które mi są niepotrzebne
-    		//array_splice($_SESSION['tablica'], $movie_id, 1 );
-    		$movie_array->drop('tab_filmow',$movie_arr_id->get('movie_arr_id'));
-    		// Może się wydawać dziwne ale splice dziala tylko na kluczach typu int, dlatego odwoluje sie do movie_ar_id
-    		$movie_array_dir->drop('mov_arr_dir',$movie_arr_id->get('movie_arr_id'));
-     		//Zabieram dostęp do tablicy
-    		$check = false;
-	    }
+		if ( ($movie_arr_id->get('movie_arr_id') != NULL) )
+		{
+			// Usuwam z tymczasowej tablicy filmy, które mi są niepotrzebne
+			//array_splice($_SESSION['tablica'], $movie_id, 1 );
+			$movie_array->drop('tab_filmow',$movie_arr_id->get('movie_arr_id'));
+			// Może się wydawać dziwne ale splice dziala tylko na kluczach typu int, dlatego odwoluje sie do movie_ar_id
+			$movie_array_dir->drop('mov_arr_dir',$movie_arr_id->get('movie_arr_id'));
+			//Zabieram dostęp do tablicy
+			$check = false;
+		}
 
-    	//echo 'Check status: '. $movie_name->check_status.' </br>';
+		//echo 'Check status: '. $movie_name->check_status.' </br>';
 
-    	// Sprawdzam czy wystapio zdarzenie GET i dodaje do bazy danych infomracje
+		// Sprawdzam czy wystapio zdarzenie GET i dodaje do bazy danych infomracje
 		if ($movie_name->get('movie_name') != "")
     	{
- 	 		 try
-    		 {
-			    $movie_array->putArr('tab_filmow',$movie_name->get('movie_name'));
-			    $movie_array_dir->putArr('mov_arr_dir',$movie_name->get('mov_dir'));
-			 } 
-			 catch(Exception $e)
-			 {
-			    echo $e->getMessage();
-			 }
-    	}
+ 	 		try
+    		{
+				$movie_array->putArr('tab_filmow',$movie_name->get('movie_name'));
+				$movie_array_dir->putArr('mov_arr_dir',$movie_name->get('mov_dir'));
+			} 
+			catch(Exception $e)
+			{
+				echo $e->getMessage();
+			}
+		}
 
-	   	if ($check)
+		if ($check)
 		{
 			// W tej tablicy zapisane są tablice 'start', 'stop' i id dodanego filmu
 		    $movie_duration = array ("start"=>$_GET['start'], "stop"=>$_GET['stop'], "mov_id"=>$_GET['mov_id'], "mov_dir"=>$_GET['mov_dir']);
