@@ -6,6 +6,7 @@ require('./Klasy/Buttons.php');
 $Next = new Buttons('Aktywuj zdarzenie','event','','submit','150px','40px','#dcedc8','black','');
 $Del = new Buttons('Usuń zdarzenie','del_id','','submit','150px','40px','#ffccb3','black','');
 
+date_default_timezone_set('UTC');
 $time = date_default_timezone_get();
 $time_copy = date('h:i:s', time());
 
