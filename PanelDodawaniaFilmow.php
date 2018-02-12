@@ -68,7 +68,7 @@ session_start();
     		$check = false;
 	    }
 
-    	echo 'Check status: '. $movie_name->check_status.' </br>';
+    	//echo 'Check status: '. $movie_name->check_status.' </br>';
 
     	// Sprawdzam czy wystapio zdarzenie GET i dodaje do bazy danych infomracje
 		if ($movie_name->get('movie_name') != "")
@@ -115,58 +115,51 @@ session_start();
 		}
 
 		$arr_count = $movie_array->count('tab_filmow');
-    	echo "</br>Ilość elementów w tablicy".$arr_count.'</br>';
+    	//echo "</br>Ilość elementów w tablicy".$arr_count.'</br>';
     
+    	echo '<div class="col-sm-3">'; 
 		echo '<form action="PanelDodawaniaFilmow.php" method="GET">';
 		for ($i = 0; $i < $arr_count; $i++)
 		{
+			echo '<input type="hidden" name="mov_dir[]" value="'.$movie_array_dir->getArr('mov_arr_dir',$i).'">';
+		 	
+		 	echo '<div class="col-sm-2 col-sm-offset-0 text-center">'; 
+		    	echo '<div style="height:5px;"></div>';
+					echo "Film nr: ".$movie_array->getArr('tab_filmow',$i)." o nazwie ".$movie_array_dir->getArr('mov_arr_dir',$i);
+				echo '<div style="height:5px;"></div>';
+		    echo '</div>';
 
-		    //echo '<div class="row" text-center style="background-color:#e6eeff; border: 1px solid #FFFFFF;">';
+    		echo '<div class="col-sm-2 col-sm-offset-1 text-center">'; 
+    			echo '<div style="height:5px;"></div>';
+					echo '<div class="form-group">';
+						echo '<label for="godzr">Godz. rozpoczecia: </label>';
+						echo '<input type="time" name="start[]" class="form-control">';
+						echo '<label for="godzz">Godz. zakończenia: </label>';
+						echo '<input type="time" name="stop[]"  class="form-control">';
+						echo '<input type="hidden" name="mov_id[]" value="'.$movie_array->getArr('tab_filmow',$i).'" class="form-control">';
+					echo '</div>';
+				echo '<div style="height:5px;"></div>';
+    		echo '</div>';
 
-				echo '<input type="hidden" name="mov_dir[]" value="'.$movie_array_dir->getArr('mov_arr_dir',$i).'">';
-			 	echo '<div class="col-sm-2 col-sm-offset-0 text-center">'; 
-			    	echo '<div style="height:5px;"></div>';
-						echo "Film nr: ".$movie_array->getArr('tab_filmow',$i)." o nazwie ".$movie_array_dir->getArr('mov_arr_dir',$i);
-						echo '<div style="height:5px;"></div>';
-			    	echo '</div>';
-
-		    		echo '<div class="col-sm-2 col-sm-offset-1 text-center">'; 
-		    			echo '<div style="height:5px;"></div>';
-							//echo '<form action="PanelDodawaniaFilmow.php" method="get">';
-		    					echo '<div class="form-group">';
-									echo '<label for="godzr">Godz. rozpoczecia: </label>';
-									echo '<input type="time" name="start[]" class="form-control">';
-									echo '<label for="godzz">Godz. zakończenia: </label>';
-									echo '<input type="time" name="stop[]"  class="form-control">';
-									echo '<input type="hidden" name="mov_id[]" value="'.$movie_array->getArr('tab_filmow',$i).'" class="form-control">';
-								echo '</div>';
-							//echo '</form>';
-						
-						echo '<div style="height:5px;"></div>';
-		    		echo '</div>';
-
-			    	echo '<div class="col-sm-1 col-sm-offset-0 text-center">'; 
-			    		echo '<div style="height:5px;"></div>';
-							$Delete_Button->Show_witch_value($i);
-						echo '<div style="height:5px;"></div>';
-			    	echo '</div>';
-		     }
-
-			
-			    echo '<div class="col-sm-2 col-sm-offset-0 text-center">'; 
-					echo '<div style="height:5px;"></div>';
-					echo '<button type="submit" class="btn btn-info btn-sm" style="width:100px; height:40px; background-color: #DD3333; color:white; border-color: #a3c2c2;">
-							Zatwierdź
-						</button>';
-						//echo '</form>';
-					echo '<div style="height:5px;"></div>';
-				echo '</div>';
-	     	echo '</form>';
+	    	echo '<div class="col-sm-1 col-sm-offset-0 text-center">'; 
+	    		echo '<div style="height:5px;"></div>';
+					$Delete_Button->Show_witch_value($i);
+				echo '<div style="height:5px;"></div>';
+	    	echo '</div>';
+		}
+		echo '</div>';
+		    echo '<div class="col-sm-2 col-sm-offset-0 text-center">'; 
+				echo '<div style="height:5px;"></div>';
+				echo '<button type="submit" class="btn btn-info btn-sm" style="width:100px; height:40px; background-color: #DD3333; color:white; border-color: #a3c2c2;">
+						Zatwierdź
+					</button>';
+					//echo '</form>';
+				echo '<div style="height:5px;"></div>';
+			echo '</div>';
+	    echo '</form>';
     ?>
 	</br>
 </div>
-
-
 
 <script type="text/javascript">
 	var count = <?php echo $count ?>;
@@ -176,7 +169,6 @@ session_start();
 	{
 		x[i] = document.getElementsByTagName("p")[i].getAttribute("id"); 
 		y[i] = document.getElementsByTagName("p")[i].getAttribute("value"); 
-    
 		console.log(i); 
 	}
 

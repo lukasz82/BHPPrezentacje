@@ -1,6 +1,9 @@
-    /* Seth height of the grid so .sidenav can be 100% (adjust if needed) 
-    .row.content {min-height: 800px}
-    */
+    /* Seth height of the grid so .sidenav can be 100% (adjust if needed) */
+    .row.content {
+      min-height: 800px;
+      height: 100%;
+    }
+    
     /* Set gray background color and 100% height */
     .sidenav {
       background-color: #f1f1f1;
