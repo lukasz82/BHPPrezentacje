@@ -8,7 +8,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-<link rel="stylesheet" type="text/css" href="Style/strona.css">
+<link rel="stylesheet" type="text/css" href="Style/full.css">
 
 </head>
 <body>
@@ -16,7 +16,6 @@
 <div class="container-fluid">
 <div class="row content">
    
-<div id="time"></div>
 <div id="Film"></div>
 
 <script>
@@ -106,7 +105,7 @@ async function getDataFromDatabase()
                 {
                     if (time_copy > data_start && time_copy < data_stop)
                     {
-                        document.getElementById('Film').innerHTML = '<video id="myvideo" width="800" height="600" controls autoplay loop><source src="Filmy/'+data.dir_filmu[i]+'" type="video/mp4">Your browser does not support the video tag.</video>';
+                        document.getElementById('Film').innerHTML = '<video id="myVideo" controls autoplay loop><source src="Filmy/'+data.dir_filmu[i]+'" type="video/mp4">Your browser does not support the video tag.</video>';
                         play[i] = true;
                     } 
                     else 

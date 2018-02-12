@@ -173,7 +173,7 @@ session_start();
 
 	for (var i = 0; i<count; i++)
 	{
-		document.getElementById('Film'+i).innerHTML =  '<video width="250" height="150" controls><source src="Filmy/'+x[i]+'" type="video/mp4">Your browser does not support the video tag.</video>';
+		document.getElementById('Film'+i).innerHTML = '<video width="250" height="150" controls><source src="Filmy/'+x[i]+'" type="video/mp4">Your browser does not support the video tag.</video>';
 	}
 </script>
 
