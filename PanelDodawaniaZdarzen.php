@@ -89,10 +89,7 @@ $time_copy = date('h:i:s', time());
         }
     }
     echo '</div>';
-    
 ?> 
-
-
 
 <script>
 function getTime() 
@@ -122,7 +119,6 @@ $(document).ready(function()
         var czas = getTime();
         document.getElementById('czas').innerHTML =  czas;
     }, 1000);
-
 
     $("button").click( function() // odczytuje jakiekolwiek kliknięcie jakiegokolwiek przycisku
     {
@@ -164,8 +160,6 @@ $(document).ready(function()
                     ' - ' +
                     data.stop[i];
                 }
-                
-                
             }
         });
     }
