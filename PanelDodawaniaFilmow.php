@@ -71,7 +71,7 @@ session_start();
 
 		// Sprawdzam czy wystapio zdarzenie GET i dodaje do bazy danych infomracje
 		if ($movie_name->get('movie_name') != "")
-    	{
+		{
 			try
 			{
 				$movie_array->putArr('tab_filmow',$movie_name->get('movie_name'));
