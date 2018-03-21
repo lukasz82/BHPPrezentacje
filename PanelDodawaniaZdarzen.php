@@ -1,10 +1,15 @@
+<link rel="stylesheet" type="text/css" href="styles/pdzdarzen.css">
 <?php 
 // Pliki źródłowe
-readfile ('Layouty/naglowek.html');
-require('./Klasy/BazaDanych/DataBase.php');
-require('./Klasy/Buttons.php');
-$Next = new Buttons('Aktywuj zdarzenie','event','','submit','150px','40px','#dcedc8','black','');
-$Del = new Buttons('Usuń zdarzenie','del_id','','submit','150px','40px','#ffccb3','black','');
+readfile ('Layouts/naglowek.html');
+require('Classes/DataBase/DataBase.php');
+require('Classes/Buttons.php');
+
+$Next = new Buttons('Aktywuj zdarzenie','event','','submit','150px','40px','#dcedc8','black','','next');
+$Del = new Buttons('Usuń zdarzenie','del_id','','submit','150px','40px','#ffccb3','black','','del');
+// PAWEL
+$Edit = new Buttons('Edytuj zdarzenie','edit_id','','submit','150px','40px','#ffbb33','black','','edit');
+// ----
 $time_copy = date('h:i:s', time());
 ?> 
 
@@ -75,12 +80,18 @@ $time_copy = date('h:i:s', time());
         $actual_id = stripslashes($line['id']);
 
         if ($actual_id_copy != stripslashes($line['id']) )
-        {            
+        {   
             // Przekazuje do buttona id zdarzenia  
             $Next->Show_id($actual_id_copy);
             echo '<form action="PanelDodawaniaZdarzen.php" method="get">';
                 $Del->Show_witch_value($actual_id_copy);
             echo '</form>';
+            // PAWEŁ - - 
+            // echo '<form action="Edit.php" method="get">';
+            echo '<form action="Edit.php" method="get">';
+                $Edit->Show_witch_value($actual_id_copy);
+            echo '</form>';
+            // - - - - - 
             echo '</br></br>';
             $show_once = false;
         }
@@ -101,7 +112,7 @@ $(document).ready(function()
     $.ajax
     ({
         type : 'get',
-        url  : 'Funkcje/EventNow.php',
+        url  : 'Functions/EventNow.php',
         // Do "data" przekazuję id zdarzenia, żeby je aktywować
         // Dodstaję callback z tabelą z bazy danych
         success:function(data)
@@ -120,12 +131,14 @@ $(document).ready(function()
     $("button").click( function() // odczytuje jakiekolwiek kliknięcie jakiegokolwiek przycisku
     {
         var id = $(this).attr('id'); // tworzę nową zmienną, do której przypisuję wartość id z klikniętego przycisku, this jest to po prostu $("button"), żeby nie pisac ileś razy tego samego odwołuje się do "tego" wywołanego obiektu 
-
+        console.log("Wartosc id =" + id);
+        var value = $(this).attr('value');
+        console.log("Wartosc value =" + value);
         // Przekazuję z javascriptu id klikniętego zdarzenia do zmiennej sesyjnej serwera
         $.ajax
         ({
             type : 'get',
-            url  : 'Funkcje/EventId.php',
+            url  : 'Functions/EventId.php',
             // Do "data" przekazuję id zdarzenia, żeby je aktywować
             data : {'id':id},
             // Dodstaję callback z tabelą z bazy danych
@@ -138,7 +151,7 @@ $(document).ready(function()
         $.ajax
         ({
             type : 'get',
-            url  : 'Funkcje/EventsFromDatabase.php',
+            url  : 'Functions/EventsFromDatabase.php',
             // Do "data" przekazuję id zdarzenia, żeby je aktywować
             data : {'id':id},
             dataType : 'json',
@@ -165,4 +178,4 @@ $(document).ready(function()
 });
 </script>
 
-<?php readfile ('Layouty/stopka.html');?> 
+<?php readfile ('Layouts/stopka.html');?> 

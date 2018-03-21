@@ -1,5 +1,5 @@
 <?php 
-require('DataBase.php');
+require('../Classes/DataBase/DataBase.php');
 $id = $_GET['id'];
 
 DataBase::InitializeDB();
@@ -11,10 +11,6 @@ $lista_filmow = DataBase::GetDataFromDatabase("SELECT zdarzenie.dir_filmu, zdarz
   for ( $i = 0; $i < $count; $i++)
   {
     $line = $result->fetch_assoc();
-    //echo stripslashes($line['nazwa']);
-    //echo stripslashes($line['dir_filmu']);
-    //echo stripslashes($line['start']);
-    //echo stripslashes($line['stop']);
     $movie_duration["nazwa"][] = stripslashes($line['nazwa']);
     $movie_duration["dir_filmu"][] = stripslashes($line['dir_filmu']);
     $movie_duration["start"][] = stripslashes($line['start']);

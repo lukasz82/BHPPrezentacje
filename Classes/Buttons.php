@@ -12,7 +12,7 @@ class Buttons
 	private $text_color = "white";
 	private $border_color = "#123456";
 
-	public function __construct($text,$name, $value, $type, $width, $height, $background_color, $text_color, $border_color) 
+	public function __construct($text,$name, $value, $type, $width, $height, $background_color, $text_color, $border_color, $id) 
 	{ 
 		$this->text = $text;
 		$this->name = $name;
@@ -23,6 +23,7 @@ class Buttons
 		$this->background_color = $background_color;
 		$this->text_color = $text_color;
 		$this->border_color = $border_color;
+		$this->id = $id;
 	}
 
 	public function Show_witch_value($value)
@@ -30,6 +31,7 @@ class Buttons
 		echo '
 		<button 
 		name="'.$this->name.'" 
+		id="'.$this->id.'" 
 		value="'.$value.'" 
 		class="btn btn-info btn-sm" 
 		style="
@@ -67,6 +69,7 @@ class Buttons
 		echo '
 		<button 
 		name="'.$this->name.'" 
+		id="'.$this->id.'" 
 		value="";
 		class="btn btn-info btn-sm" 
 		style="
@@ -85,6 +88,7 @@ class Buttons
 		echo '
 		<button 
 		name="'.$this->name.'" 
+		id="'.$this->id.'" 
 		value="'.$value.'" ;
 		class="btn btn-info btn-sm" 
 		style="

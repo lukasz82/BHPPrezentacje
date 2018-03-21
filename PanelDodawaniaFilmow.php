@@ -1,20 +1,20 @@
 <?php 
 // Pliki źródłowe
-readfile ('Layouty/naglowek.html');
-require('./Klasy/BazaDanych/DataBase.php');
-require('./Klasy/sessions.php');
-require('./Klasy/UploadMethods.php');
-require('./Klasy/Buttons.php');
-include('./Funkcje/InitVariables.php');
+readfile ('Layouts/naglowek.html');
+require('Classes/DataBase/DataBase.php');
+require('Classes/sessions.php');
+require('Classes/UploadMethods.php');
+require('Classes/Buttons.php');
+include('Functions/InitVariables.php');
 
 // Inicjacje klas i konstruktorów
 DataBase::InitializeDB();
 
-$Delete_Button = new Buttons('Usuń','movie_arr_id','','submit','60px','40px','#004080','white','#a3c2c2');
-$Accept_Button = new Buttons('Zatwierdź i przejdź dalej','','','submit','150px','40px','#FF4500','white','#a3c2c2');
-$Add_Mov_Button = new Buttons('Dodaj film do listy','movie_name','','submit','150px','40px','#dcedc8','black','');
+$Delete_Button = new Buttons('Usuń','movie_arr_id','','submit','60px','40px','#004080','white','#a3c2c2','');
+$Accept_Button = new Buttons('Zatwierdź i przejdź dalej','','','submit','150px','40px','#FF4500','white','#a3c2c2','');
+$Add_Mov_Button = new Buttons('Dodaj film do listy','movie_name','','submit','150px','40px','#dcedc8','black','','');
 
-$dir = dir('Filmy');
+$dir = dir('Movies');
 session_start();
 ?>
 
@@ -27,7 +27,7 @@ session_start();
 			{ 
 				echo '<div class="col-sm-3 text-center">';
 					echo '<div style="height:5px; background-color: #234567;"></div><p style="background-color: #234567; color:white; margin: 0cm 0cm 0cm 0cm; padding: 0cm 0cm 0cm 0cm;" id="'.$file.'" value='.$count.' >'.$file.'</p><div style="height:5px; background-color: #234567;"></div>';
-						echo '<div id = "Film'.$count.'">Filmy</div>';
+						echo '<div id = "Film'.$count.'">Movies</div>';
 						echo '<form action="PanelDodawaniaFilmow.php" method="GET">
 						<input type="hidden" name="mov_dir" value="'.$file.'">';
 						$Add_Mov_Button->Show_witch_line_and_value($count);
@@ -55,10 +55,11 @@ session_start();
 		$movie_arr_id->getInit('movie_arr_id');
 		$movie_arr_id->getInit('movie_arr_dir');
 		$movie_dir->getInit('mov_dir');
+		//$movie_array->set('tab_filmow',0);
 
 		if ( ($movie_arr_id->get('movie_arr_id') != NULL) )
 		{
-			// Usuwam z tymczasowej tablicy filmy, które mi są niepotrzebne
+			// Usuwam z tymczasowej tablicy Movies, które mi są niepotrzebne
 			//array_splice($_SESSION['tablica'], $movie_id, 1 );
 			$movie_array->drop('tab_filmow',$movie_arr_id->get('movie_arr_id'));
 			// Może się wydawać dziwne ale splice dziala tylko na kluczach typu int, dlatego odwoluje sie do movie_ar_id
@@ -173,8 +174,8 @@ session_start();
 
 	for (var i = 0; i<count; i++)
 	{
-		document.getElementById('Film'+i).innerHTML = '<video width="250" height="150" controls><source src="Filmy/'+x[i]+'" type="video/mp4">Your browser does not support the video tag.</video>';
+		document.getElementById('Film'+i).innerHTML = '<video width="250" height="150" controls><source src="Movies/'+x[i]+'" type="video/mp4">Your browser does not support the video tag.</video>';
 	}
 </script>
 
-<?php readfile ('Layouty/stopka.html');?> 
+<?php readfile ('Layouts/stopka.html');?> 

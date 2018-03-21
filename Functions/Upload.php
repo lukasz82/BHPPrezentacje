@@ -1,9 +1,12 @@
 <?php 
 // Pliki źródłowe
-readfile ('Layouts/naglowek.html');
-require('Classes/Buttons.php');
-
-$button = new Buttons('Dodaj Film','submit','','submit','150px','40px','#dcedc8','black','','');
+readfile ('../Layouts/naglowek.html');
+require('../Classes/DataBase/DataBase.php');
+require('../Classes/Buttons.php');
+// Inicjacje klas i konstruktorów
+DataBase::InitializeDB();
+//echo Baza::getValue();
+$button = new Buttons('Dodaj Film','submit','','submit','150px','40px','#dcedc8','black','');
 $error = '';
 
 if(isset($_POST['submit']))
@@ -54,4 +57,4 @@ if(isset($_POST['submit']))
 		</div>
 	</form>
 </div>
-<?php readfile ('Layouts/stopka.html');?>
+<?php readfile ('../Layouts/stopka.html');?>

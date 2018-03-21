@@ -49,9 +49,24 @@ class DataBase
     	} 
     	else if ($int > 1)
     	{
-        	self::$db -> query("DELETE zdarzenia, zdarzenie FROM zdarzenia INNER JOIN zdarzenie ON zdarzenia.id = zdarzenie.id_zdarzenia WHERE zdarzenia.id = '$del_id'");
+            // Usuwa kaskadowo
+        	self::$db -> query("DELETE FROM zdarzenia WHERE id = '$del_id'");
         	self::$db->close();
     	}
     }
+
+    // PAWEŁ --
+    public static function UpdateDataToDatabase($sql)
+    {
+        self::$db->query($sql);
+        self::$db->close();
+    }
+    // --------
+
+    public static function Update($sql)
+    {
+        self::$db->query($sql);
+        self::$db->close();
+    } 
 } 
 ?>

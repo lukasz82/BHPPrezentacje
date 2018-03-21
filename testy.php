@@ -8,7 +8,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-<link rel="stylesheet" type="text/css" href="Style/full.css">
+<link rel="stylesheet" type="text/css" href="styles/full.css">
 
 </head>
 <body>
@@ -37,7 +37,7 @@ function getEventId()
     return $.ajax
     ({
         type : 'get',
-        url  : 'Funkcje/EventNow.php',
+        url  : 'Functions/EventNow.php',
         // Do "data" przekazuję id zdarzenia, żeby je aktywować
         // Dodstaję callback z tabelą z bazy danych
         success:function(data)
@@ -62,7 +62,7 @@ async function getDataFromDatabase()
     $.ajax
     ({
         type : 'get',
-        url  : 'Funkcje/EventsFromDatabase.php',
+        url  : 'Functions/EventsFromDatabase.php',
         // Do "data" przekazuję id zdarzenia, żeby je aktywować
         data : {'id':id},
         dataType : 'json',
@@ -105,7 +105,7 @@ async function getDataFromDatabase()
                 {
                     if (time_copy > data_start && time_copy < data_stop)
                     {
-                        document.getElementById('Film').innerHTML = '<video id="myVideo" controls autoplay loop><source src="Filmy/'+data.dir_filmu[i]+'" type="video/mp4">Your browser does not support the video tag.</video>';
+                        document.getElementById('Film').innerHTML = '<video id="myVideo" controls autoplay loop><source src="Movies/'+data.dir_filmu[i]+'" type="video/mp4">Your browser does not support the video tag.</video>';
                         play[i] = true;
                     } 
                     else 
@@ -137,7 +137,7 @@ $(document).ready(function() //czeka aż dokument zostanie wczytany
             getDataFromDatabase();
             counter = 0;
         }
-        document.getElementById('time').innerHTML =  time;
+        //document.getElementById('time').innerHTML =  time;
     }, 1000);
 
 });

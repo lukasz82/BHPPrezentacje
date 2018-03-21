@@ -1,5 +1,5 @@
   <?php
-require('DataBase.php');
+require('../Classes/DataBase/DataBase.php');
 $id = $_GET['id'];
   DataBase::InitializeDB();
   DataBase::Update("UPDATE aktywnezdarzenie SET id_zdarzenia = '$id' WHERE id=1");

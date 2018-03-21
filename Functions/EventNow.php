@@ -1,5 +1,5 @@
 <?php 
-require('DataBase.php');
+require('../Classes/DataBase/DataBase.php');
 DataBase::InitializeDB();
     $aktywne_zdarzenie = DataBase::GetDataFromDatabase("SELECT id_zdarzenia FROM aktywnezdarzenie WHERE id = 1");
     $result = $aktywne_zdarzenie['result'];
