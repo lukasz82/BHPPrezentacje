@@ -92,26 +92,47 @@ session_start();
 		    //Przekazuję tablicę movie_durration do 
 			if (!isset($_SESSION['movie_details'])) $_SESSION['movie_details'] = array();
 			$_SESSION['movie_details'] = $movie_duration;
-			var_dump($_SESSION['movie_details']);
-			echo '</br></br>';
-			var_dump($movie_duration);
+ 			$tcount = count($_GET['start']);
 
-		    // Wylistuje sobię tablice z powyzej, czyli dodane czasy trwania filmów do tablicy gównej
-		    $tcount = count($_GET['start']);
-		    echo 'Ilosc filmow: '.$tcount.'</br>';
+		    $is_ok = true;
 		    for ($i = 0; $i < $tcount; $i++)
 		    {
-		    	echo 'Film nr. '.$i.': </br>';
-		    	echo 'Start: '.$movie_duration['start'][$i].'</br>';
-		    	echo 'Stop: '.$movie_duration['stop'][$i].'</br>';
-		    	echo 'Id Filmu: '.$movie_duration['mov_id'][$i].'</br>';
-		    	echo 'ścieżka: '.$movie_duration['mov_dir'][$i].'</br>';
-		    	echo '</br>';
-		    }
+				$mov_start_copy = $movie_duration['start'][$i];
+				$mov_stop_copy = $movie_duration['stop'][$i];
 
-		    echo '<form action="AddEventToDB.php" method="POST">';
-			$Accept_Button->Show();
-		    echo '</form>';
+		    	for ($j = 0; $j < $tcount; $j++)
+		    	{
+		    		if ($j != $i)
+		    		{
+		    			// Warunki walidujące wpidane daty
+						if (($mov_start_copy >= $movie_duration['start'][$j] && $mov_stop_copy <= $movie_duration['stop'][$j]) || ($mov_start_copy > $mov_stop_copy) || $mov_start_copy == "" || $mov_stop_copy == "")
+		    			{
+		    				$is_ok = false;
+		    			}
+		    		}
+		    	}
+				echo '</br>';
+		    }
+		    
+		    if ($is_ok == true)
+		    {
+			    for ($i = 0; $i < $tcount; $i++)
+			    {
+			    	echo 'Film nr. '.$i.': </br>';
+			    	echo 'Start: '.$movie_duration['start'][$i].'</br>';
+			    	echo 'Stop: '.$movie_duration['stop'][$i].'</br>';
+			    	echo 'Id Filmu: '.$movie_duration['mov_id'][$i].'</br>';
+			    	echo 'ścieżka: '.$movie_duration['mov_dir'][$i].'</br>';
+			    	echo '</br>';
+			    }
+
+			    echo '<form action="AddEventToDB.php" method="POST">';
+				$Accept_Button->Show();
+			    echo '</form>';
+			} else 
+			{
+				echo '<font color="red">Blad przy wypelnianiu formularza, wystąpil jeden z poniższych bledow: </br> - Daty nakadają się na siebie</br> - Godzina rozpoczecia jest później niż godzina zakończenia filmu</br> - Wymagane pola są puste</br> - Wystąpil inny blad </font> </br>Proszę poprawić';
+			}
 		}
 
 		$arr_count = $movie_array->count('tab_filmow');

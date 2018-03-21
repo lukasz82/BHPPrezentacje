@@ -17,6 +17,7 @@ $time_copy = date('h:i:s', time());
 <div class="col-sm-5">
     <h4><div id="czas" style="font-size: 30px;"><?php echo $time_copy; ?></div></h4>
     <h4><p id="Podglad">Aktywne zdarzenie: Zdarzenie nr </p></h4>
+    <div id="wynik">Kliknięty przycisk</div>
 </div>
 
 <?php
@@ -135,43 +136,51 @@ $(document).ready(function()
         var value = $(this).attr('value');
         console.log("Wartosc value =" + value);
         // Przekazuję z javascriptu id klikniętego zdarzenia do zmiennej sesyjnej serwera
-        $.ajax
-        ({
-            type : 'get',
-            url  : 'Functions/EventId.php',
-            // Do "data" przekazuję id zdarzenia, żeby je aktywować
-            data : {'id':id},
-            // Dodstaję callback z tabelą z bazy danych
-            success:function(data)
-            {
-               console.log(data);
-            }
-        });
 
-        $.ajax
-        ({
-            type : 'get',
-            url  : 'Functions/EventsFromDatabase.php',
-            // Do "data" przekazuję id zdarzenia, żeby je aktywować
-            data : {'id':id},
-            dataType : 'json',
-            // Dodstaję callback z tabelą z bazy danych
-            success:function(data)
+
+        document.getElementById('wynik').innerHTML =  id;
+
+        // Zabezpieczenie, żeby nie aktywować pustego zdarzenia przy próbie edycji lub usunięcia
+        if (id != "del" && id != "edit")
             {
-                console.log(data);
-                document.getElementById('Podglad').innerHTML =  "";
-                var count = data.nazwa.length;
-                document.getElementById('Podglad').innerHTML += "Aktywne zdarzenie: " + data.nazwa[0];
-                for (i=0;i<count;i++)
+            $.ajax
+            ({
+                type : 'get',
+                url  : 'Functions/EventId.php',
+                // Do "data" przekazuję id zdarzenia, żeby je aktywować
+                data : {'id':id},
+                // Dodstaję callback z tabelą z bazy danych
+                success:function(data)
                 {
-                    document.getElementById('Podglad').innerHTML +=  
-                    '</br>' +
-                    data.start[i] +
-                    ' - ' +
-                    data.stop[i];
+                   console.log(data);
                 }
-            }
-        });
+            });
+
+            $.ajax
+            ({
+                type : 'get',
+                url  : 'Functions/EventsFromDatabase.php',
+                // Do "data" przekazuję id zdarzenia, żeby je aktywować
+                data : {'id':id},
+                dataType : 'json',
+                // Dodstaję callback z tabelą z bazy danych
+                success:function(data)
+                {
+                    console.log(data);
+                    document.getElementById('Podglad').innerHTML =  "";
+                    var count = data.nazwa.length;
+                    document.getElementById('Podglad').innerHTML += "Aktywne zdarzenie: " + data.nazwa[0];
+                    for (i=0;i<count;i++)
+                    {
+                        document.getElementById('Podglad').innerHTML +=  
+                        '</br>' +
+                        data.start[i] +
+                        ' - ' +
+                        data.stop[i];
+                    }
+                }
+            });
+        }
     }
     );
     //).first().click();
