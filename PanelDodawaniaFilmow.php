@@ -100,35 +100,35 @@ session_start();
 				$mov_start_copy = $movie_duration['start'][$i];
 				$mov_stop_copy = $movie_duration['stop'][$i];
 
-		    	for ($j = 0; $j < $tcount; $j++)
-		    	{
+				for ($j = 0; $j < $tcount; $j++)
+				{
 					if ($j != $i)
-		    		{
-		    			// Warunki walidujące wpidane daty
+					{
+						// Warunki walidujące wpidane daty
 						if (($mov_start_copy >= $movie_duration['start'][$j] && $mov_stop_copy <= $movie_duration['stop'][$j]) || ($mov_start_copy > $mov_stop_copy) || $mov_start_copy == "" || $mov_stop_copy == "")
-		    			{
-		    				$is_ok = false;
-		    			}
-		    		}
-		    	}
+						{
+							$is_ok = false;
+						}
+					}
+				}
 				echo '</br>';
-		    }
-		    
-		    if ($is_ok == true)
-		    {
-			    for ($i = 0; $i < $tcount; $i++)
-			    {
-			    	echo 'Film nr. '.$i.': </br>';
-			    	echo 'Start: '.$movie_duration['start'][$i].'</br>';
-			    	echo 'Stop: '.$movie_duration['stop'][$i].'</br>';
-			    	echo 'Id Filmu: '.$movie_duration['mov_id'][$i].'</br>';
-			    	echo 'ścieżka: '.$movie_duration['mov_dir'][$i].'</br>';
-			    	echo '</br>';
-			    }
+			}
+			
+			if ($is_ok == true)
+			{
+				for ($i = 0; $i < $tcount; $i++)
+				{
+					echo 'Film nr. '.$i.': </br>';
+					echo 'Start: '.$movie_duration['start'][$i].'</br>';
+					echo 'Stop: '.$movie_duration['stop'][$i].'</br>';
+					echo 'Id Filmu: '.$movie_duration['mov_id'][$i].'</br>';
+					echo 'ścieżka: '.$movie_duration['mov_dir'][$i].'</br>';
+					echo '</br>';
+				}
 
-			    echo '<form action="AddEventToDB.php" method="POST">';
+				echo '<form action="AddEventToDB.php" method="POST">';
 				$Accept_Button->Show();
-			    echo '</form>';
+				echo '</form>';
 			} else 
 			{
 				echo '<font color="red">Blad przy wypelnianiu formularza, wystąpil jeden z poniższych bledow: </br> - Daty nakadają się na siebie</br> - Godzina rozpoczecia jest później niż godzina zakończenia filmu</br> - Wymagane pola są puste</br> - Wystąpil inny blad </font> </br>Proszę poprawić';
@@ -136,22 +136,22 @@ session_start();
 		}
 
 		$arr_count = $movie_array->count('tab_filmow');
-    	//echo "</br>Ilość elementów w tablicy".$arr_count.'</br>';
-    
-    	echo '<div class="col-sm-3">'; 
+		//echo "</br>Ilość elementów w tablicy".$arr_count.'</br>';
+	
+		echo '<div class="col-sm-3">'; 
 		echo '<form action="PanelDodawaniaFilmow.php" method="GET">';
 		for ($i = 0; $i < $arr_count; $i++)
 		{
 			echo '<input type="hidden" name="mov_dir[]" value="'.$movie_array_dir->getArr('mov_arr_dir',$i).'">';
 			
-		 	echo '<div class="col-sm-2 col-sm-offset-0 text-center">'; 
-		    	echo '<div style="height:5px;"></div>';
+			echo '<div class="col-sm-2 col-sm-offset-0 text-center">'; 
+				echo '<div style="height:5px;"></div>';
 					echo "Film nr: ".$movie_array->getArr('tab_filmow',$i)." o nazwie ".$movie_array_dir->getArr('mov_arr_dir',$i);
 				echo '<div style="height:5px;"></div>';
-		    echo '</div>';
+			echo '</div>';
 
-    		echo '<div class="col-sm-2 col-sm-offset-1 text-center">'; 
-    			echo '<div style="height:5px;"></div>';
+			echo '<div class="col-sm-2 col-sm-offset-1 text-center">'; 
+				echo '<div style="height:5px;"></div>';
 					echo '<div class="form-group">';
 
 						// -----------------------------------------------------------
@@ -175,19 +175,19 @@ session_start();
 							echo '<input type="time" name="stop[]" class="form-control">';
 						}
 						echo '<input type="hidden" name="mov_id[]" value="'.$movie_array->getArr('tab_filmow',$i).'" class="form-control">';
-						
+
 					echo '</div>';
 				echo '<div style="height:5px;"></div>';
-    		echo '</div>';
+			echo '</div>';
 
-	    	echo '<div class="col-sm-1 col-sm-offset-0 text-center">'; 
-	    		echo '<div style="height:5px;"></div>';
+			echo '<div class="col-sm-1 col-sm-offset-0 text-center">'; 
+				echo '<div style="height:5px;"></div>';
 					$Delete_Button->Show_witch_value($i);
 				echo '<div style="height:5px;"></div>';
-	    	echo '</div>';
+			echo '</div>';
 		}
 		echo '</div>';
-		    echo '<div class="col-sm-2 col-sm-offset-0 text-center">'; 
+			echo '<div class="col-sm-2 col-sm-offset-0 text-center">'; 
 				echo '<div style="height:5px;"></div>';
 				echo '<button type="submit" class="btn btn-info btn-sm" style="width:100px; height:40px; background-color: #DD3333; color:white; border-color: #a3c2c2;">
 						Zatwierdź
@@ -195,8 +195,8 @@ session_start();
 					//echo '</form>';
 				echo '<div style="height:5px;"></div>';
 			echo '</div>';
-	    echo '</form>';
-    ?>
+		echo '</form>';
+	?>
 	</br>
 </div>
 
