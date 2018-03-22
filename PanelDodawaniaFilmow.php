@@ -87,22 +87,22 @@ session_start();
 		if ($check)
 		{
 			// W tej tablicy zapisane są tablice 'start', 'stop' i id dodanego filmu
-		    $movie_duration = array ("start"=>$_GET['start'], "stop"=>$_GET['stop'], "mov_id"=>$_GET['mov_id'], "mov_dir"=>$_GET['mov_dir']);
-		    
-		    //Przekazuję tablicę movie_durration do 
+			$movie_duration = array ("start"=>$_GET['start'], "stop"=>$_GET['stop'], "mov_id"=>$_GET['mov_id'], "mov_dir"=>$_GET['mov_dir']);
+			
+			//Przekazuję tablicę movie_durration do 
 			if (!isset($_SESSION['movie_details'])) $_SESSION['movie_details'] = array();
 			$_SESSION['movie_details'] = $movie_duration;
  			$tcount = count($_GET['start']);
 
-		    $is_ok = true;
-		    for ($i = 0; $i < $tcount; $i++)
-		    {
+			$is_ok = true;
+			for ($i = 0; $i < $tcount; $i++)
+			{
 				$mov_start_copy = $movie_duration['start'][$i];
 				$mov_stop_copy = $movie_duration['stop'][$i];
 
 		    	for ($j = 0; $j < $tcount; $j++)
 		    	{
-		    		if ($j != $i)
+					if ($j != $i)
 		    		{
 		    			// Warunki walidujące wpidane daty
 						if (($mov_start_copy >= $movie_duration['start'][$j] && $mov_stop_copy <= $movie_duration['stop'][$j]) || ($mov_start_copy > $mov_stop_copy) || $mov_start_copy == "" || $mov_stop_copy == "")
@@ -143,7 +143,7 @@ session_start();
 		for ($i = 0; $i < $arr_count; $i++)
 		{
 			echo '<input type="hidden" name="mov_dir[]" value="'.$movie_array_dir->getArr('mov_arr_dir',$i).'">';
-		 	
+			
 		 	echo '<div class="col-sm-2 col-sm-offset-0 text-center">'; 
 		    	echo '<div style="height:5px;"></div>';
 					echo "Film nr: ".$movie_array->getArr('tab_filmow',$i)." o nazwie ".$movie_array_dir->getArr('mov_arr_dir',$i);
@@ -153,11 +153,29 @@ session_start();
     		echo '<div class="col-sm-2 col-sm-offset-1 text-center">'; 
     			echo '<div style="height:5px;"></div>';
 					echo '<div class="form-group">';
+
+						// -----------------------------------------------------------
+						//	Wczytuje zapamiętane wartości wpisane przez użytkownika
+						// -----------------------------------------------------------
 						echo '<label for="godzr">Godz. rozpoczecia: </label>';
-						echo '<input type="time" name="start[]" class="form-control">';
+						if ($check)
+						{
+							echo '<input type="time" name="start[]" value="'.$movie_duration['start'][$i].'" class="form-control">';
+						} else 
+						{
+							echo '<input type="time" name="start[]" class="form-control">';
+						}
+						
 						echo '<label for="godzz">Godz. zakończenia: </label>';
-						echo '<input type="time" name="stop[]"  class="form-control">';
+						if ($check)
+						{
+							echo '<input type="time" name="stop[]" value="'.$movie_duration['stop'][$i].'" class="form-control">';
+						} else 
+						{
+							echo '<input type="time" name="stop[]" class="form-control">';
+						}
 						echo '<input type="hidden" name="mov_id[]" value="'.$movie_array->getArr('tab_filmow',$i).'" class="form-control">';
+						
 					echo '</div>';
 				echo '<div style="height:5px;"></div>';
     		echo '</div>';
