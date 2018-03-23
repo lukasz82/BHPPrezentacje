@@ -7,7 +7,7 @@ body {
     overflow:hidden;
 }
 
-video::::-webkit-scrollbar { 
+video::-webkit-scrollbar { 
     display: none; 
 }
 

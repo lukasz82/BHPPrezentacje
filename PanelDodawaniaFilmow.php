@@ -109,7 +109,15 @@ session_start();
 						{
 							$is_ok = false;
 						}
-					}
+					} 
+					else if ($j == $i)
+					{
+						// Warunki walidujące wpidane daty
+						if (($movie_duration['start'][$j] >= $movie_duration['stop'][$j]) || $movie_duration['start'][$j] == "" || $movie_duration['stop'][$j] == "")
+						{
+							$is_ok = false;
+						}
+					} 
 				}
 				echo '</br>';
 			}
