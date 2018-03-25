@@ -2,14 +2,34 @@
 class Sessions
 {
 	// Zmienna, która sprawdza czy zmienna sesyjna zostala zainicjowana
-	public $check_session = false;
+	
+	private $check_session;
+	private $variable_name = "";
+
+	public function __construct()
+   	{
+    	$this->check_session = 0;
+   	}
+
+   	// Zwraca true jeżeli obiekt zostal zainicjowany
+   	public function getSessionState()
+   	{
+   		return $this->check_session;
+   	}
+
+   	public function clearArray()
+   	{
+   		unset($_SESSION[$this->variable_name]);
+   		return $this->check_session = 0;
+   	}
 
     public function set($variable_name, $value)
 	{	
-		if (isset($_SESSION[$variable_name])) 
+		if (!isset($_SESSION[$variable_name])) 
 		{
         	$_SESSION[$variable_name];
-        	$check_session = true;
+        	$this->variable_name = $variable_name;
+        	$this->check_session = 1;
     	} 	
         $_SESSION[$variable_name] = $value;
 	} 
@@ -21,10 +41,11 @@ class Sessions
 
 	public function setArr($variable_name)
 	{	
-		if (isset($_SESSION[$variable_name])) 
+		if (!isset($_SESSION[$variable_name])) 
 		{
         	$_SESSION[$variable_name] = array();
-        	$check_session = true;
+        	$this->variable_name = $variable_name;
+        	$this->check_session = 1;
     	} 	
 	} 
 

@@ -14,10 +14,11 @@ $time_copy = date('h:i:s', time());
 ?> 
 
 </br>
-<div class="col-sm-5">
+
+<div class="col-sm-9">
     <h4><div id="czas" style="font-size: 30px;"><?php echo $time_copy; ?></div></h4>
     <h4><p id="Podglad">Aktywne zdarzenie: Zdarzenie nr </p></h4>
-    <div id="wynik">Kliknięty przycisk</div>
+    <div id="wynik"></div>
 </div>
 
 <?php
@@ -40,43 +41,44 @@ $time_copy = date('h:i:s', time());
     $movie_list = DataBase::GetDataFromDatabase("SELECT zdarzenie.dir_filmu, zdarzenie.start, zdarzenie.stop, zdarzenia.nazwa, zdarzenia.id FROM zdarzenie INNER JOIN zdarzenia ON zdarzenie.id_zdarzenia = zdarzenia.id");
     
     $count = $movie_list['count'];
-    //echo 'Ilość wierszy '.$count.'</br>';
     $result = $movie_list['result'];
 
     $line = $result->fetch_assoc();
     $actual_id = stripslashes($line['id']);
     $show_once = false;
     
-    echo '<div class="col-sm-5" style="margin:5px;">';
+    echo '<div class="col-sm-8" style="margin:5px;">';
     for ( $i = 0; $i < $count; $i++)
     {
-        if ($line['id'] % 2 == 0)
-        {
-            echo '<div style="background-color: #e0e0eb;">';
-        } 
 
-        if ($line['id'] % 2 == 1)
-        {
-            echo '<div style="background-color: #b3cce6;">';
-        } 
 
         if ($show_once == false)
-        {
+        {        
+            if ($line['id'] % 2 == 0)
+            {
+                echo '<div class="col-sm-2" style="margin:5px; background-color: #e0e0eb;">';
+            } 
+
+            if ($line['id'] % 2 == 1)
+            {
+                echo '<div class="col-sm-2" style="margin:5px; background-color: #b3cce6;">';
+            } 
             //echo "Aktualne Id = :".$actual_id."</br>";
-            echo '&nbsp&nbsp'.stripslashes($line['nazwa']);
+            echo stripslashes($line['nazwa']);
             echo '</br></br>';
             $show_once = true;
         }
-        echo '<b>&nbsp&nbsp'.stripslashes($line['dir_filmu']).'</b>';
         echo '</br>';
-        echo '&nbsp&nbsp'.stripslashes($line['start']);
+        echo stripslashes($line['dir_filmu']);
+        echo '</br>';
+        echo stripslashes($line['start']);
         echo ' - ';
-        echo '&nbsp&nbsp'.stripslashes($line['stop']);
+        echo stripslashes($line['stop']);
 
         $actual_id_copy = $actual_id;
 
-        echo '</br>';
-        echo '</div>';
+        //echo '</br>';
+        
         $line = $result->fetch_assoc();
         $actual_id = stripslashes($line['id']);
 
@@ -87,18 +89,18 @@ $time_copy = date('h:i:s', time());
             echo '<form action="PanelDodawaniaZdarzen.php" method="get">';
                 $Del->Show_witch_value($actual_id_copy);
             echo '</form>';
-            // PAWEŁ - - 
-            // echo '<form action="Edit.php" method="get">';
             echo '<form action="Edit.php" method="get">';
                 $Edit->Show_witch_value($actual_id_copy);
             echo '</form>';
-            // - - - - - 
-            echo '</br></br>';
+            echo '</br>';
             $show_once = false;
+            echo '</div>'; 
         }
+        
     }
     echo '</div>';
 ?> 
+
 
 <script>
 function getTime() 

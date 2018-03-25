@@ -13,12 +13,13 @@ DataBase::InitializeDB();
 $Delete_Button = new Buttons('Usuń','movie_arr_id','','submit','60px','40px','#004080','white','#a3c2c2','');
 $Accept_Button = new Buttons('Zatwierdź i przejdź dalej','','','submit','150px','40px','#FF4500','white','#a3c2c2','');
 $Add_Mov_Button = new Buttons('Dodaj film do listy','movie_name','','submit','150px','40px','#dcedc8','black','','');
+$Reset_Sessions = new Buttons('Wyczyść Listę','reset','','submit','150px','40px','#dcedc8','black','','');
 
 $dir = dir('Movies');
 session_start();
 ?>
 
-<div class="col-md-6 sidenav">
+<div class="col-md-6">
 	<?php
 	$count = -2; // Nie wiem dlaczego dwie petle przechodzą bez wykonania instrukcji
 		while($file = $dir->read())
@@ -55,12 +56,31 @@ session_start();
 		$movie_arr_id->getInit('movie_arr_id');
 		$movie_arr_id->getInit('movie_arr_dir');
 		$movie_dir->getInit('mov_dir');
-		//$movie_array->set('tab_filmow',0);
+
+
+		if (!isset($_GET['reset']))
+		{
+			$_GET['reset'] = null;
+		}
+
+		if ($_GET['reset'] == 'reset')
+		{
+			//$movie_array->clearArray();
+			//$movie_array_dir->clearArray();
+			//$movie_duration = null;
+			unset($_SESSION['tab_filmow']);
+			unset($_SESSION['mov_arr_dir']);
+			//echo "reset";
+		}
+
+		if ($movie_array->getSessionState() == 0)
+		{
+			$movie_array->setArr('tab_filmow');
+		}
 
 		if ( ($movie_arr_id->get('movie_arr_id') != NULL) )
 		{
 			// Usuwam z tymczasowej tablicy Movies, które mi są niepotrzebne
-			//array_splice($_SESSION['tablica'], $movie_id, 1 );
 			$movie_array->drop('tab_filmow',$movie_arr_id->get('movie_arr_id'));
 			// Może się wydawać dziwne ale splice dziala tylko na kluczach typu int, dlatego odwoluje sie do movie_ar_id
 			$movie_array_dir->drop('mov_arr_dir',$movie_arr_id->get('movie_arr_id'));
@@ -147,6 +167,14 @@ session_start();
 		//echo "</br>Ilość elementów w tablicy".$arr_count.'</br>';
 	
 		echo '<div class="col-sm-3">'; 
+
+
+		echo '<div class="col-sm-2 col-sm-offset-0 text-center">'; 
+			echo '<form action="PanelDodawaniaFilmow.php" method="GET">';
+				$Reset_Sessions->Show_witch_value("reset");
+			echo '</form>';
+		echo '</div>';
+
 		echo '<form action="PanelDodawaniaFilmow.php" method="GET">';
 		for ($i = 0; $i < $arr_count; $i++)
 		{
@@ -195,7 +223,7 @@ session_start();
 			echo '</div>';
 		}
 		echo '</div>';
-			echo '<div class="col-sm-2 col-sm-offset-0 text-center">'; 
+			echo '<div class="col-sm-3 col-sm-offset-0 text-center">'; 
 				echo '<div style="height:5px;"></div>';
 				echo '<button type="submit" class="btn btn-info btn-sm" style="width:100px; height:40px; background-color: #DD3333; color:white; border-color: #a3c2c2;">
 						Zatwierdź
