@@ -159,7 +159,7 @@ session_start();
 				echo '</form>';
 			} else 
 			{
-				echo '<font color="red">Blad przy wypelnianiu formularza, wystąpil jeden z poniższych bledow: </br> - Daty nakadają się na siebie</br> - Godzina rozpoczecia jest później niż godzina zakończenia filmu</br> - Wymagane pola są puste</br> - Wystąpil inny blad </font> </br>Proszę poprawić';
+				echo '<div><font color="red">Blad przy wypelnianiu formularza, wystąpil jeden z poniższych bledow: </br> - Daty nakadają się na siebie</br> - Godzina rozpoczecia jest później niż godzina zakończenia filmu</br> - Wymagane pola są puste</br> - Wystąpil inny blad </br><b>Proszę poprawić</b></font></div>';
 			}
 		}
 
